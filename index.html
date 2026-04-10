@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Alike Travels · Complete Destination Explorer | 12 Countries + Budget Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f7 0%, #d4dfe9 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            padding: 2rem 1.5rem;
+            color: #1a2c3e;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .main-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .main-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f3b2c, #1e6b50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .main-header p {
+            color: #2c5a4a;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .country-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .country-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .country-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+            background: #f5faf7;
+        }
+
+        .country-card.active {
+            border-color: #0f3b2c;
+            background: #e9f3ef;
+            color: #0f3b2c;
+        }
+
+        .flag {
+            font-size: 1.3rem;
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            background: #0f3b2c;
+            padding: 1.2rem 2rem;
+            color: white;
+        }
+
+        .panel-header h2 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .panel-header p {
+            opacity: 0.85;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+        }
+
+        .info-content {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: #fefef9;
+            border-radius: 1.5rem;
+            padding: 1rem 1.3rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #2b7a62;
+        }
+
+        .info-card h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2c5a4a;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p, .info-card li {
+            font-size: 0.88rem;
+            line-height: 1.45;
+            color: #1e2f3a;
+        }
+
+        .badge {
+            background: #e0efe9;
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #0f3b2c;
+            margin-top: 0.2rem;
+        }
+
+        .budget-highlight {
+            background: #fef4e0;
+            border-left-color: #e6a017;
+        }
+
+        .upgrade-note {
+            background: #e8f0fe;
+            border-left-color: #2b7a62;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 1rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #4b6b5e;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 750px) {
+            .country-card {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            .info-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-header">
+        <h1>✈️ Alike Travels · Complete Destination Explorer</h1>
+        <p>12 destinations | Seasons, visa, currency + Expert Budget Guide (3-star category)</p>
+    </div>
+
+    <div class="country-grid" id="countryGrid"></div>
+
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-header">
+            <h2><span id="selectedFlag">🌏</span> <span id="selectedCountryName">Select a destination</span></h2>
+            <p id="selectedTagline">Complete travel intelligence for Indian travelers</p>
+        </div>
+        <div class="info-content" id="infoContent"></div>
+    </div>
+    <div class="footer-note">
+        📌 Estimated cost based on 3-star category | 4-star upgrade: +10K overall (except Bali - flights extra)
+    </div>
+</div>
+
+<script>
+    // Budget dataset based on qualification sheet (3-star category, per person)
+    const budgetData = {
+        "Thailand": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Phuket & Krabi", cost: "40-45K" },
+                { nights: "9N10D", destinationDetail: "Phuket & Krabi", cost: "85-90K" },
+                { nights: "4N5D", destinationDetail: "Bangkok Pattaya", cost: "35-40K" },
+                { nights: "9N10D", destinationDetail: "Bangkok Pattaya", cost: "75-80K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Malaysia": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Kuala Lumpur / Langkawi", cost: "40-45K" },
+                { nights: "6N7D", destinationDetail: "Multi-city", cost: "60-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Singapore": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Singapore", cost: "70K" },
+                { nights: "5N6D", destinationDetail: "Singapore", cost: "75-80K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Vietnam": {
+            variants: [
+                { nights: "5N6D", destinationDetail: "Vietnam", cost: "50K" },
+                { nights: "9N10D", destinationDetail: "Vietnam", cost: "90-95K" },
+                { nights: "4N5D", destinationDetail: "Vietnam", cost: "40-45K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Sri Lanka": {
+            variants: [
+                { nights: "5N6D", destinationDetail: "Sri Lanka", cost: "55-60K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Dubai": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Dubai", cost: "50-55K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Abu Dhabi": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Abu Dhabi", cost: "60-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Bali": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Bali", cost: "30-35K (land package only)" }
+            ],
+            upgradeNote: "Flights for Bali cost approx ₹40K per person extra. 4-star upgrade: +10K overall"
+        },
+        "Qatar": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Doha", cost: "55-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Yas Island": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Yas Island (Abu Dhabi)", cost: "65-70K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget. Theme park tickets extra."
+        },
+        "Pattaya": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Pattaya", cost: "30-35K" },
+                { nights: "5N6D", destinationDetail: "Pattaya + Bangkok", cost: "45-50K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        }
+    };
+
+    // Full destination data (same as before, enriched)
+    const countriesData = {
+        "Dubai": {
+            flag: "🇦🇪",
+            intro: "Dubai is a luxury city known for skyscrapers, shopping, and desert tourism",
+            famousFor: "Burj Khalifa, desert safari, luxury malls, Palm Jumeirah",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Weather becomes cool (20–30°C), perfect for desert safari, shopping & outdoor activities. Summer heat is gone.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Temperature starts rising but still manageable → fewer crowds & cheaper rates.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme heat (40–50°C) → outdoor travel becomes difficult.",
+            kidsActivities: "Waterparks (Aquaventure), Dubai Aquarium, desert safari, Legoland",
+            visaForIndians: "Tourist visa required",
+            howToGetVisa: "Apply online or via agent before travel → approval needed before arrival",
+            currencyInr: "AED (1 AED ≈ ₹22–23)",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Luxury, shopping, desert adventures, honeymoon"
+        },
+        "Vietnam": {
+            flag: "🇻🇳",
+            intro: "Vietnam offers budget travel with nature, history & culture",
+            famousFor: "Ha Long Bay, Pho, Hanoi Old Quarter, Da Nang",
+            peakSeason: "Oct – Apr",
+            whyPeak: "Weather is dry, cooler, less humidity, ideal for sightseeing & cruises.",
+            moderateSeason: "May – Jun",
+            whyModerate: "Weather becomes warmer with some rain → still travel-friendly.",
+            offSeason: "Jul – Sep",
+            whyOff: "Heavy monsoon rains & storms → travel disruptions.",
+            kidsActivities: "Halong Bay cruises, water puppet shows, beach time, VinWonders",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online → approval in 3–5 days, print e-visa",
+            currencyInr: "1,00,000 VND ≈ ₹330",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget travel, culture, nature, street food"
+        },
+        "Bali": {
+            flag: "🇮🇩",
+            intro: "Bali is a tropical island known for beaches & spirituality",
+            famousFor: "Kuta Beach, Ubud temples, rice terraces, Tanah Lot",
+            peakSeason: "Apr – Oct",
+            whyPeak: "Dry season, sunny days, low rainfall → best for beaches & outdoor fun.",
+            moderateSeason: "Mar & Nov",
+            whyModerate: "Transition months → mixed weather (some rain, some sun).",
+            offSeason: "Dec – Feb",
+            whyOff: "Heavy rainfall & humidity → beaches not enjoyable.",
+            kidsActivities: "Waterbom Bali, Bali Safari, turtle release, water sports",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily, pay fee on arrival",
+            currencyInr: "1,00,000 IDR ≈ ₹530",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Honeymoon, relaxation, yoga, surfing"
+        },
+        "Singapore": {
+            flag: "🇸🇬",
+            intro: "Singapore is a modern, clean, family-friendly destination",
+            famousFor: "Marina Bay Sands, Sentosa Island, Gardens by the Bay",
+            peakSeason: "Feb – Apr",
+            whyPeak: "Less rainfall + festivals → comfortable sightseeing & family travel.",
+            moderateSeason: "May – Jul",
+            whyModerate: "Slight humidity & occasional rain → manageable travel.",
+            offSeason: "Nov – Jan",
+            whyOff: "Frequent heavy rain → outdoor plans affected.",
+            kidsActivities: "Universal Studios Singapore, S.E.A. Aquarium, Zoo, Night Safari",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online before travel, usually 3-5 days processing",
+            currencyInr: "SGD ≈ ₹60–62",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Family trips, clean city, luxury transit"
+        },
+        "Abu Dhabi": {
+            flag: "🇦🇪",
+            intro: "Abu Dhabi is cultural, calm & luxurious",
+            famousFor: "Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, Ferrari World",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Same as Dubai: pleasant winter weather, ideal for outdoor tourism.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Slightly hot but not extreme → decent time with lower prices.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme desert heat → not suitable for tourism.",
+            kidsActivities: "Ferrari World, Warner Bros World, Yas Waterworld",
+            visaForIndians: "Tourist visa required",
+            howToGetVisa: "Apply through UAE visa system or travel agent",
+            currencyInr: "AED (same as Dubai) 1 AED ≈ ₹22–23",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Culture + luxury, architecture lovers"
+        },
+        "Thailand": {
+            flag: "🇹🇭",
+            intro: "Thailand is popular for nightlife, beaches & affordability",
+            famousFor: "Phi Phi Islands, Pattaya, Bangkok nightlife, Phuket",
+            peakSeason: "Nov – Feb",
+            whyPeak: "Cool and dry weather → best for islands, beaches & nightlife.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Hot weather (up to 35°C) → okay but slightly uncomfortable.",
+            offSeason: "Jun – Oct",
+            whyOff: "Monsoon season → heavy rain, island tours affected.",
+            kidsActivities: "Safari World, beaches, elephant sanctuaries, water parks",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily, free for Indians until further notice",
+            currencyInr: "THB ≈ ₹2.3",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget + nightlife, islands, street food"
+        },
+        "Qatar": {
+            flag: "🇶🇦",
+            intro: "Qatar is a rich Gulf country known for luxury, modern infrastructure, and cultural heritage.",
+            famousFor: "Museum of Islamic Art, desert safari, Souq Waqif",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Pleasant weather (20–28°C) suitable for city tours and desert activities.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Temperature rises but still manageable → fewer crowds.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme heat (40–45°C) makes outdoor travel difficult.",
+            kidsActivities: "Desert safari, museums, Katara Cultural Village",
+            visaForIndians: "Visa on Arrival / E-visa",
+            howToGetVisa: "Apply online or get visa on arrival depending on eligibility",
+            currencyInr: "QAR (1 QAR ≈ ₹22–23)",
+            timeDiff: "-2 hr 30 min",
+            bestFor: "Luxury + culture, stopover destination"
+        },
+        "Yas Island": {
+            flag: "🇦🇪",
+            intro: "Yas Island is an entertainment hub famous for theme parks and family attractions.",
+            famousFor: "Ferrari World, Warner Bros World, Yas Waterworld",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Cool weather, perfect for theme parks and outdoor attractions.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Slightly hot but still visitable with fewer tourists.",
+            offSeason: "May – Sep",
+            whyOff: "Very hot weather reduces tourist activity.",
+            kidsActivities: "Ferrari World, Warner Bros World, Yas Waterworld, CLYMB",
+            visaForIndians: "UAE visa required",
+            howToGetVisa: "Same as UAE visa process → apply via agent",
+            currencyInr: "AED (1 AED ≈ ₹22–23)",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Family entertainment, thrill seekers"
+        },
+        "Pattaya": {
+            flag: "🇹🇭",
+            intro: "Pattaya is a beach destination known for nightlife, water sports, and entertainment.",
+            famousFor: "Beaches, nightlife, Coral Island, Walking Street",
+            peakSeason: "Nov – Feb",
+            whyPeak: "Cool and dry weather ideal for beaches and nightlife.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Hot and humid but still okay for travel.",
+            offSeason: "Jun – Oct",
+            whyOff: "Heavy rainfall affects beach and water activities.",
+            kidsActivities: "Beach fun, water sports, Cartoon Network Amazone",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily",
+            currencyInr: "THB ≈ ₹2.3",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget + nightlife, beach parties"
+        },
+        "Malaysia": {
+            flag: "🇲🇾",
+            intro: "Malaysia offers a mix of modern cities, islands, rainforests, and cultural diversity.",
+            famousFor: "Petronas Twin Towers, Langkawi, Genting Highlands, Penang",
+            peakSeason: "Dec – Feb",
+            whyPeak: "Less rainfall, comfortable weather for sightseeing and islands.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Warm weather with occasional rain → budget-friendly.",
+            offSeason: "Sep – Nov",
+            whyOff: "Heavy monsoon rains disrupt travel plans.",
+            kidsActivities: "Theme parks, aquariums, Legoland Malaysia, Sunway Lagoon",
+            visaForIndians: "E-visa / Visa-free (short stay)",
+            howToGetVisa: "Apply online or visa-free entry for up to 30 days (conditions apply)",
+            currencyInr: "MYR (1 MYR ≈ ₹18–20)",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Mixed travel (city + nature), shopping"
+        },
+        "Sri Lanka": {
+            flag: "🇱🇰",
+            intro: "Sri Lanka is known for beaches, tea plantations, wildlife, and cultural heritage.",
+            famousFor: "Sigiriya Rock Fortress, tea gardens, Ella, Galle Fort",
+            peakSeason: "Dec – Mar",
+            whyPeak: "Dry weather, best for beaches and wildlife exploration.",
+            moderateSeason: "Apr – Sep",
+            whyModerate: "Mixed weather, some rain but still travel possible.",
+            offSeason: "Oct – Nov",
+            whyOff: "Heavy rainfall and storms affect sightseeing.",
+            kidsActivities: "Wildlife safaris, beaches, elephant orphanage",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online → approval before travel",
+            currencyInr: "LKR (100 LKR ≈ ₹25–30)",
+            timeDiff: "Same as India (0 hrs)",
+            bestFor: "Nature, relaxation, culture, tea trails"
+        }
+    };
+
+    const countryList = [
+        "Dubai", "Vietnam", "Bali", "Singapore", "Abu Dhabi", "Thailand",
+        "Qatar", "Yas Island", "Pattaya", "Malaysia", "Sri Lanka"
+    ];
+
+    function createInfoCard(title, contentHtml, icon = "📌", extraClass = "") {
+        const card = document.createElement('div');
+        card.className = `info-card ${extraClass}`;
+        card.innerHTML = `<h3>${icon} ${title}</h3><div>${contentHtml}</div>`;
+        return card;
+    }
+
+    // Generate budget HTML for a destination
+    function getBudgetHtml(countryName) {
+        const budget = budgetData[countryName];
+        if (!budget) return "<p>Budget data coming soon. Contact team for custom quote.</p>";
+        
+        let html = `<ul style="margin:0; padding-left:1rem;">`;
+        budget.variants.forEach(v => {
+            html += `<li><strong>${v.nights}</strong> (${v.destinationDetail}): ₹${v.cost} per person</li>`;
+        });
+        html += `</ul><div class="upgrade-note"><strong>⭐ Upgrade Note:</strong> ${budget.upgradeNote}</div>`;
+        return html;
+    }
+
+    function renderCountryDetails(countryKey) {
+        const data = countriesData[countryKey];
+        if (!data) return;
+
+        document.getElementById('selectedFlag').innerText = data.flag;
+        document.getElementById('selectedCountryName').innerText = countryKey;
+        document.getElementById('selectedTagline').innerHTML = `${data.intro} | Best for: ${data.bestFor}`;
+
+        const container = document.getElementById('infoContent');
+        container.innerHTML = '';
+
+        // Card 1: Highlights
+        const highlightsHtml = `
+            <strong>🏆 Famous For:</strong> ${data.famousFor}<br>
+            <strong>👪 Kids Activities:</strong> ${data.kidsActivities}<br>
+            <strong>✈️ Best For:</strong> ${data.bestFor}
+        `;
+        container.appendChild(createInfoCard("Destination Highlights", highlightsHtml, "🌟"));
+
+        // Card 2: Seasons deep dive
+        const seasonsHtml = `
+            <strong>🔆 Peak Season:</strong> ${data.peakSeason}<br>
+            <div class="badge">${data.whyPeak}</div><br><br>
+            <strong>🌤️ Moderate Season:</strong> ${data.moderateSeason}<br>
+            <div class="badge">${data.whyModerate}</div><br><br>
+            <strong>☔ Off Season:</strong> ${data.offSeason}<br>
+            <div class="badge">${data.whyOff}</div>
+        `;
+        container.appendChild(createInfoCard("Best Time to Visit", seasonsHtml, "📅"));
+
+        // Card 3: Visa + Currency + Time
+        const logisticsHtml = `
+            <strong>🛂 Visa for Indians:</strong> ${data.visaForIndians}<br>
+            <strong>📄 How to get visa:</strong> ${data.howToGetVisa}<br>
+            <strong>💰 Currency (INR):</strong> ${data.currencyInr}<br>
+            <strong>⏰ Time Difference:</strong> ${data.timeDiff}
+        `;
+        container.appendChild(createInfoCard("Travel Logistics", logisticsHtml, "🎫"));
+
+        // Card 4: Budget Estimate (NEW - from qualification sheet)
+        const budgetHtml = getBudgetHtml(countryKey);
+        container.appendChild(createInfoCard("Estimated Budget (3-Star)", budgetHtml, "💰", "budget-highlight"));
+
+        // Card 5: Expert Recommendation
+        let recommendation = `Best months: ${data.peakSeason} → ${data.whyPeak.substring(0, 100)}${data.whyPeak.length > 100 ? '...' : ''}`;
+        container.appendChild(createInfoCard("Expert Recommendation", recommendation, "🧭"));
+    }
+
+    function buildCountrySelector() {
+        const grid = document.getElementById('countryGrid');
+        grid.innerHTML = '';
+        countryList.forEach(country => {
+            const data = countriesData[country];
+            if (!data) return;
+            const btn = document.createElement('div');
+            btn.className = 'country-card';
+            btn.setAttribute('data-country', country);
+            btn.innerHTML = `<span class="flag">${data.flag}</span> <span>${country}</span>`;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.country-card').forEach(card => card.classList.remove('active'));
+                btn.classList.add('active');
+                renderCountryDetails(country);
+                document.getElementById('infoPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            grid.appendChild(btn);
+        });
+        const firstCard = document.querySelector('.country-card');
+        if (firstCard) {
+            firstCard.classList.add('active');
+            renderCountryDetails(countryList[0]);
+        }
+    }
+
+    buildCountrySelector();
+</script>
+</body>
+</html>
