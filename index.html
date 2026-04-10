@@ -1,1537 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Alike Travels · Premium Notation Tool</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <title>Alike Travels · Complete Destination Explorer | 12 Countries + Budget Guide</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #eef2f7 0%, #d4dfe9 100%); font-family: 'Inter', system-ui, sans-serif; padding: 2rem 1.5rem; color: #1a2c3e; min-height: 100vh; display: flex; flex-direction: column; }
-        .container { max-width: 1500px; margin: 0 auto; flex: 1; width: 100%; }
-        .builder-wrapper { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
-        .form-panel { flex: 1.4; min-width: 380px; background: #ffffff; border-radius: 2rem; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2); overflow: hidden; }
-        .form-header { background: #0f3b2c; padding: 1.2rem 2rem; color: white; }
-        .form-header h2 { font-weight: 600; font-size: 1.5rem; }
-        .form-body { padding: 1.8rem 2rem 2rem; max-height: 70vh; overflow-y: auto; }
-        .input-group { margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
-        .input-group label { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; color: #2c5a4a; }
-        .input-group input, .input-group select, .input-group textarea { padding: 0.7rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 1.2rem; font-size: 0.9rem; font-family: inherit; background: #fefefe; }
-        .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .child-age-row { background: #f8fafc; padding: 0.8rem; border-radius: 1.2rem; margin-top: 0.5rem; }
-        .btn-generate { background: #0f3b2c; color: white; border: none; padding: 0.85rem 1.5rem; font-weight: 600; border-radius: 2rem; cursor: pointer; }
-        .btn-reset { background: #5e6e66; color: white; border: none; padding: 0.85rem 1.2rem; font-weight: 600; border-radius: 2rem; cursor: pointer; }
-        .output-panel { flex: 1; min-width: 420px; background: #1e2a32; border-radius: 2rem; display: flex; flex-direction: column; overflow: hidden; }
-        .output-header { background: #0b2b22; padding: 1rem 1.8rem; color: #f0f9f4; }
-        .notation-box { background: #0f1a1f; padding: 1.4rem; margin: 1.2rem; border-radius: 1.5rem; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; color: #cde5db; white-space: pre-wrap; border: 1px solid #2e5a4a; max-height: 520px; overflow-y: auto; }
-        .copy-btn { background: #2b7a62; border: none; color: white; padding: 0.6rem 1.2rem; margin: 0 1.2rem 1rem auto; border-radius: 2rem; font-weight: 600; cursor: pointer; width: fit-content; }
-        .deal-name-area { margin: 0 1.2rem 0.5rem 1.2rem; background: #00000030; border-radius: 1rem; padding: 0.7rem 1rem; font-family: monospace; font-weight: bold; color: #c3f2e2; border-left: 4px solid #51b48b; }
-        .footer-credit { text-align: center; margin-top: 2rem; padding: 1rem; font-family: monospace; font-size: 0.85rem; color: #1e3b2f; border-top: 1px dashed #5e8b7a; user-select: none; pointer-events: none; }
-        .select2-container--default .select2-selection--multiple { border-radius: 1.2rem; border-color: #e2e8f0; }
-        small.hint { font-size: 0.7rem; color: #4b6e5e; }
-        .button-group { display: flex; gap: 1rem; margin-top: 1rem; }
-        .budget-calc-section { background: #f0f7f4; border-radius: 1.5rem; padding: 1rem; margin-top: 1rem; border: 1px solid #c8e0d6; }
-        .budget-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px dashed #c8e0d6; }
-        .budget-label { font-weight: 600; font-size: 0.75rem; color: #1a5c48; }
-        .budget-value { font-weight: 700; font-size: 0.9rem; color: #0f3b2c; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f7 0%, #d4dfe9 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            padding: 2rem 1.5rem;
+            color: #1a2c3e;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .main-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .main-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f3b2c, #1e6b50);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .main-header p {
+            color: #2c5a4a;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .country-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .country-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .country-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+            background: #f5faf7;
+        }
+
+        .country-card.active {
+            border-color: #0f3b2c;
+            background: #e9f3ef;
+            color: #0f3b2c;
+        }
+
+        .flag {
+            font-size: 1.3rem;
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            background: #0f3b2c;
+            padding: 1.2rem 2rem;
+            color: white;
+        }
+
+        .panel-header h2 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .panel-header p {
+            opacity: 0.85;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+        }
+
+        .info-content {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: #fefef9;
+            border-radius: 1.5rem;
+            padding: 1rem 1.3rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #2b7a62;
+        }
+
+        .info-card h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2c5a4a;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p, .info-card li {
+            font-size: 0.88rem;
+            line-height: 1.45;
+            color: #1e2f3a;
+        }
+
+        .badge {
+            background: #e0efe9;
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #0f3b2c;
+            margin-top: 0.2rem;
+        }
+
+        .budget-highlight {
+            background: #fef4e0;
+            border-left-color: #e6a017;
+        }
+
+        .upgrade-note {
+            background: #e8f0fe;
+            border-left-color: #2b7a62;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 1rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #4b6b5e;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 750px) {
+            .country-card {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            .info-content {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="builder-wrapper">
-            <div class="form-panel">
-                <div class="form-header">
-                    <h2>Alike Travels · Premium Notation Tool</h2>
-                    <p>Multiple destinations · Auto nights · Child ages · Capital output</p>
-                </div>
-                <div class="form-body">
-                    <!-- DESTINATION -->
-                    <div class="input-group">
-                        <label>DESTINATION (MULTIPLE SELECT ALLOWED)</label>
-                        <select id="destSelect" class="searchable-dropdown" multiple>
-                            <option value="Dubai">Dubai</option>
-                            <option value="Vietnam">Vietnam</option>
-                            <option value="Bali">Bali</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Abu Dhabi">Abu Dhabi</option>
-                            <option value="Thailand (Phuket & Krabi)">Thailand (Phuket & Krabi)</option>
-                            <option value="Thailand (Bangkok & Pattaya)">Thailand (Bangkok & Pattaya)</option>
-                            <option value="Qatar">Qatar</option>
-                            <option value="Yas Island">Yas Island</option>
-                            <option value="Malaysia">Malaysia</option>
-                            <option value="Sri Lanka">Sri Lanka</option>
-                            <option value="OTHERS">OTHERS (CUSTOM)</option>
-                        </select>
-                        <input type="text" id="customDestination" placeholder="Enter other destination" style="display:none; margin-top:6px;">
-                    </div>
-
-                    <!-- TRIP TYPE -->
-                    <div class="input-group">
-                        <label>TRIP TYPE</label>
-                        <select id="tripType">
-                            <option value="" selected disabled>Select Trip Type</option>
-                            <option value="Family">Family</option>
-                            <option value="Solo">Solo</option>
-                            <option value="Business">Business</option>
-                            <option value="Honeymoon">Honeymoon</option>
-                            <option value="Friends">Friends</option>
-                        </select>
-                    </div>
-
-                    <!-- TRAVELLERS -->
-                    <div class="input-group">
-                        <label>TRAVELLERS (ADULTS & CHILDREN)</label>
-                        <div class="row-2col">
-                            <select id="adultCount">
-                                <option value="0" selected>0 Adult</option>
-                                <option value="1">1 Adult</option>
-                                <option value="2">2 Adults</option>
-                                <option value="3">3 Adults</option>
-                                <option value="4">4 Adults</option>
-                                <option value="5">5 Adults</option>
-                            </select>
-                            <select id="childCount">
-                                <option value="0" selected>0 Child</option>
-                                <option value="1">1 Child</option>
-                                <option value="2">2 Children</option>
-                                <option value="3">3 Children</option>
-                                <option value="4">4 Children</option>
-                            </select>
-                        </div>
-                        <div id="childAgesContainer" style="margin-top:8px;"></div>
-                    </div>
-
-                    <!-- NIGHTS & DAYS -->
-                    <div class="input-group">
-                        <label>DAYS OF TRIP</label>
-                        <select id="daysSelect">
-                            <option> </option>
-                            <option value="1">1 Day</option><option value="2">2 Days</option><option value="3">3 Days</option>
-                            <option value="4">4 Days</option><option value="5">5 Days</option><option value="6">6 Days</option>
-                            <option value="7">7 Days</option><option value="8">8 Days</option><option value="9">9 Days</option>
-                            <option value="10">10 Days</option><option value="11">11 Days</option><option value="12">12 Days</option>
-                            <option value="13">13 Days</option><option value="14">14 Days</option>
-                        </select>
-                        <small class="hint">Nights will be days-1 automatically</small>
-                    </div>
-
-                    <div id="multiDestinationDays" style="display:none;">
-                        <div class="input-group">
-                            <label>MULTIPLE DESTINATIONS - TRIP DAYS BREAKDOWN</label>
-                            <div id="destinationDaysContainer"></div>
-                            <small class="hint">For each destination, select number of days</small>
-                        </div>
-                    </div>
-
-                    <!-- TRAVEL DATE -->
-                    <div class="input-group">
-                        <label>TRAVEL DATE CONFIRM?</label>
-                        <select id="travelConfirmSelect">
-                            <option></option>
-                            <option value="YES">YES (Confirmed)</option>
-                            <option value="NO">NO (Tentative)</option>
-                        </select>
-                    </div>
-                    <div id="confirmedDateGroup">
-                        <div class="input-group"><label>TRAVELLING DATE</label><input type="text" id="startDatePicker" placeholder="Pick travelling date"></div>
-                    </div>
-                    <div id="tentativeReasonGroup" style="display:none;">
-                        <div class="input-group"><label>TENTATIVE START DATE</label><input type="text" id="tentativeStartPicker" placeholder="Pick tentative start date"></div>
-                        <div class="input-group"><label>REASON FOR NOT CONFIRM</label><input type="text" id="tentativeReason" placeholder="e.g., waiting for leaves"></div>
-                    </div>
-
-                    
-                    <!-- HOTEL -->
-                    <div class="row-2col">
-                        <div class="input-group"><label>HOTEL STAR</label>
-                            <select id="hotelStarSelect">
-                                <option> </option>
-                                <option value="3 Star" selected>3 Star</option>
-                                <option value="4 Star">4 Star</option>
-                                <option value="5 Star">5 Star</option>
-                            </select>
-                        </div>
-                        <div class="input-group"><label>NUMBER OF ROOMS</label>
-                            <select id="roomCountSelect">
-                                <option > </option>
-                                <option value="1">1 Room</option><option value="2">2 Rooms</option>
-                                <option value="3">3 Rooms</option><option value="4">4 Rooms</option>
-                                <option value="5">5 Rooms</option><option value="6">6 Rooms</option>
-                                <option value="7">7 Rooms</option><option value="8">8 Rooms</option>
-                                <option value="9">9 Rooms</option><option value="10">10 Rooms</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- OUR BUDGET SECTION -->
-                    <div class="budget-calc-section">
-                        <div class="input-group" style="margin-bottom: 0.8rem;">
-                            <label>💰 OUR BUDGET (AUTO-CALCULATED)</label>
-                        </div>
-                        <div id="ourBudgetDisplay">
-                            <div class="budget-row"><span class="budget-label">Base Package:</span><span class="budget-value" id="baseBudget">—</span></div>
-                            <div class="budget-row"><span class="budget-label">Hotel Upgrade:</span><span class="budget-value" id="hotelUpgradeBudget">—</span></div>
-                            <div class="budget-row"><span class="budget-label">Child Cost:</span><span class="budget-value" id="childBudget">—</span></div>
-                            <div class="budget-row" style="border-bottom: 2px solid #0f3b2c;"><span class="budget-label"><strong>TOTAL OUR BUDGET:</strong></span><span class="budget-value" id="totalOurBudget" style="font-size: 1rem;">—</span></div>
-                        </div>
-                        
-                        <!-- Hotel Upgrade Confirmation (4 Star) -->
-                        <div id="hotel4StarConfirm" style="display:none; margin-top: 0.8rem;">
-                            <div class="input-group">
-                                <label>INFORMED ABOUT INCREMENT OF AMOUNT IN OVERALL BUDGET FOR HOTEL UPGRADE</label>
-                                <select id="hotel4StarInformed"><option value="">Select</option><option value="Yes">Yes</option><option value="No">No</option></select>
-                            </div>
-                        </div>
-                        
-                        <!-- Hotel Upgrade Confirmation (5 Star) -->
-                        <div id="hotel5StarConfirm" style="display:none; margin-top: 0.8rem;">
-                            <div class="input-group">
-                                <label>INFORMED ABOUT INCREMENT OF 20K IN OVERALL BUDGET FOR 5 STAR HOTEL</label>
-                                <select id="hotel5StarInformed"><option value="">Select</option><option value="Yes">Yes</option><option value="No">No</option></select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- CUSTOMER BUDGET SECTION -->
-                    <div class="budget-calc-section" style="margin-top: 1rem;">
-                        <div class="input-group" style="margin-bottom: 0.8rem;">
-                            <label>👤 CUSTOMER BUDGET (FOR NOTATION)</label>
-                        </div>
-                        <div class="row-2col">
-                            <div class="input-group"><label>CUSTOMER BUDGET AMOUNT</label><input type="text" id="customerBudgetAmount" placeholder="Enter customer budget"></div>
-                            <div class="input-group"><label>BUDGET TYPE</label><select id="customerBudgetType"><option value="per_person">Per Person</option><option value="total">Total Budget</option></select></div>
-                        </div>
-                        <div class="row-2col">
-                            <div class="input-group"><label>FLIGHT INCLUDED?</label><select id="customerFlightIncluded"><option value="">Select</option><option value="Yes">Yes, Flight Included</option><option value="No">No, Flight Excluded</option></select></div>
-                            <div class="input-group"><label>BUDGET CURRENCY</label><select id="customerBudgetCurrency"><option value="₹">₹ INR</option><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="AED">AED</option></select></div>
-                        </div>
-                    </div>
-                    <!-- BUDGET TYPE SELECTION -->
-<div class="input-group">
-    <label>BUDGET OFFERED BY</label>
-    <select id="budgetOfferedBy">
-        <option> </option>
-        <option value="CUSTOMER">CUSTOMER (Customer's proposed budget)</option>
-        <option value="ALIKE">ALIKE (Our estimated budget)</option>
-    </select>
-</div>
-
-                    <!-- DEPARTURE CITY -->
-                    <div class="input-group"><label>DEPARTURE CITY (INDIA)</label>
-                        <select id="departureCitySelect" class="searchable-dropdown">
-                            <option value="Port Blair">Select City</option>
-                            <option value="Port Blair">Port Blair</option>
-                            <option value="Adoni">Adoni</option>
-                            <option value="Amaravati">Amaravati</option>
-                            <option value="Anantapur">Anantapur</option>
-                            <option value="Chandragiri">Chandragiri</option>
-                            <option value="Chittoor">Chittoor</option>
-                            <option value="Dowlaiswaram">Dowlaiswaram</option>
-                            <option value="Eluru">Eluru</option>
-                            <option value="Guntur">Guntur</option>
-                            <option value="Kadapa">Kadapa</option>
-                            <option value="Kakinada">Kakinada</option>
-                            <option value="Kurnool">Kurnool</option>
-                            <option value="Machilipatnam">Machilipatnam</option>
-                            <option value="Nagarjunakonda">Nagarjunakonda</option>
-<option value="Rajahmundry">Rajahmundry</option>
-<option value="Srikakulam">Srikakulam</option>
-<option value="Tirupati">Tirupati</option>
-<option value="Vijayawada">Vijayawada</option>
-<option value="Visakhapatnam">Visakhapatnam</option>
-<option value="Vizianagaram">Vizianagaram</option>
-<option value="Yemmiganur">Yemmiganur</option>
-<option value="Itanagar">Itanagar</option>
-<option value="Dhuburi">Dhuburi</option>
-<option value="Dibrugarh">Dibrugarh</option>
-<option value="Dispur">Dispur</option>
-<option value="Guwahati">Guwahati</option>
-<option value="Jorhat">Jorhat</option>
-<option value="Nagaon">Nagaon</option>
-<option value="Sivasagar">Sivasagar</option>
-<option value="Silchar">Silchar</option>
-<option value="Tezpur">Tezpur</option>
-<option value="Tinsukia">Tinsukia</option>
-<option value="Ara">Ara</option>
-<option value="Barauni">Barauni</option>
-<option value="Begusarai">Begusarai</option>
-<option value="Bettiah">Bettiah</option>
-<option value="Bhagalpur">Bhagalpur</option>
-<option value="Bihar Sharif">Bihar Sharif</option>
-<option value="Bodh Gaya">Bodh Gaya</option>
-<option value="Buxar">Buxar</option>
-<option value="Chapra">Chapra</option>
-<option value="Darbhanga">Darbhanga</option>
-<option value="Dehri">Dehri</option>
-<option value="Dinapur Nizamat">Dinapur Nizamat</option>
-<option value="Gaya">Gaya</option>
-<option value="Hajipur">Hajipur</option>
-<option value="Jamalpur">Jamalpur</option>
-<option value="Katihar">Katihar</option>
-<option value="Madhubani">Madhubani</option>
-<option value="Motihari">Motihari</option>
-<option value="Munger">Munger</option>
-<option value="Muzaffarpur">Muzaffarpur</option>
-<option value="Patna">Patna</option>
-<option value="Purnia">Purnia</option>
-<option value="Pusa">Pusa</option>
-<option value="Saharsa">Saharsa</option>
-<option value="Samastipur">Samastipur</option>
-<option value="Sasaram">Sasaram</option>
-<option value="Sitamarhi">Sitamarhi</option>
-<option value="Siwan">Siwan</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Ambikapur">Ambikapur</option>
-<option value="Bhilai">Bhilai</option>
-<option value="Bilaspur">Bilaspur</option>
-<option value="Dhamtari">Dhamtari</option>
-<option value="Durg">Durg</option>
-<option value="Jagdalpur">Jagdalpur</option>
-<option value="Raipur">Raipur</option>
-<option value="Rajnandgaon">Rajnandgaon</option>
-<option value="Port Blair">Port Blair</option>
-<option value="Adoni">Adoni</option>
-<option value="Amaravati">Amaravati</option>
-<option value="Anantapur">Anantapur</option>
-<option value="Chandragiri">Chandragiri</option>
-<option value="Chittoor">Chittoor</option>
-<option value="Dowlaiswaram">Dowlaiswaram</option>
-<option value="Eluru">Eluru</option>
-<option value="Guntur">Guntur</option>
-<option value="Kadapa">Kadapa</option>
-<option value="Kakinada">Kakinada</option>
-<option value="Kurnool">Kurnool</option>
-<option value="Machilipatnam">Machilipatnam</option>
-<option value="Nagarjunakonda">Nagarjunakonda</option>
-<option value="Rajahmundry">Rajahmundry</option>
-<option value="Srikakulam">Srikakulam</option>
-<option value="Tirupati">Tirupati</option>
-<option value="Vijayawada">Vijayawada</option>
-<option value="Visakhapatnam">Visakhapatnam</option>
-<option value="Vizianagaram">Vizianagaram</option>
-<option value="Yemmiganur">Yemmiganur</option>
-<option value="Itanagar">Itanagar</option>
-<option value="Dhuburi">Dhuburi</option>
-<option value="Dibrugarh">Dibrugarh</option>
-<option value="Dispur">Dispur</option>
-<option value="Guwahati">Guwahati</option>
-<option value="Jorhat">Jorhat</option>
-<option value="Nagaon">Nagaon</option>
-<option value="Sivasagar">Sivasagar</option>
-<option value="Silchar">Silchar</option>
-<option value="Tezpur">Tezpur</option>
-<option value="Tinsukia">Tinsukia</option>
-<option value="Ara">Ara</option>
-<option value="Barauni">Barauni</option>
-<option value="Begusarai">Begusarai</option>
-<option value="Bettiah">Bettiah</option>
-<option value="Bhagalpur">Bhagalpur</option>
-<option value="Bihar Sharif">Bihar Sharif</option>
-<option value="Bodh Gaya">Bodh Gaya</option>
-<option value="Buxar">Buxar</option>
-<option value="Chapra">Chapra</option>
-<option value="Darbhanga">Darbhanga</option>
-<option value="Dehri">Dehri</option>
-<option value="Dinapur Nizamat">Dinapur Nizamat</option>
-<option value="Gaya">Gaya</option>
-<option value="Hajipur">Hajipur</option>
-<option value="Jamalpur">Jamalpur</option>
-<option value="Katihar">Katihar</option>
-<option value="Madhubani">Madhubani</option>
-<option value="Motihari">Motihari</option>
-<option value="Munger">Munger</option>
-<option value="Muzaffarpur">Muzaffarpur</option>
-<option value="Patna">Patna</option>
-<option value="Purnia">Purnia</option>
-<option value="Pusa">Pusa</option>
-<option value="Saharsa">Saharsa</option>
-<option value="Samastipur">Samastipur</option>
-<option value="Sasaram">Sasaram</option>
-<option value="Sitamarhi">Sitamarhi</option>
-<option value="Siwan">Siwan</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Ambikapur">Ambikapur</option>
-<option value="Bhilai">Bhilai</option>
-<option value="Bilaspur">Bilaspur</option>
-<option value="Dhamtari">Dhamtari</option>
-<option value="Durg">Durg</option>
-<option value="Jagdalpur">Jagdalpur</option>
-<option value="Raipur">Raipur</option>
-<option value="Rajnandgaon">Rajnandgaon</option>
-<option value="Daman">Daman</option>
-<option value="Diu">Diu</option>
-<option value="Silvassa">Silvassa</option>
-<option value="Delhi">Delhi</option>
-<option value="New Delhi">New Delhi</option>
-<option value="Madgaon">Madgaon</option>
-<option value="Panaji">Panaji</option>
-<option value="Ahmadabad">Ahmadabad</option>
-<option value="Amreli">Amreli</option>
-<option value="Bharuch">Bharuch</option>
-<option value="Bhavnagar">Bhavnagar</option>
-<option value="Bhuj">Bhuj</option>
-<option value="Dwarka">Dwarka</option>
-<option value="Gandhinagar">Gandhinagar</option>
-<option value="Godhra">Godhra</option>
-<option value="Jamnagar">Jamnagar</option>
-<option value="Junagadh">Junagadh</option>
-<option value="Kandla">Kandla</option>
-<option value="Khambhat">Khambhat</option>
-<option value="Kheda">Kheda</option>
-<option value="Mahesana">Mahesana</option>
-<option value="Morbi">Morbi</option>
-<option value="Nadiad">Nadiad</option>
-<option value="Navsari">Navsari</option>
-<option value="Okha">Okha</option>
-<option value="Palanpur">Palanpur</option>
-<option value="Patan">Patan</option>
-<option value="Porbandar">Porbandar</option>
-<option value="Rajkot">Rajkot</option>
-<option value="Surat">Surat</option>
-<option value="Surendranagar">Surendranagar</option>
-<option value="Valsad">Valsad</option>
-<option value="Veraval">Veraval</option>
-<option value="Ambala">Ambala</option>
-<option value="Bhiwani">Bhiwani</option>
-<option value="Faridabad">Faridabad</option>
-<option value="Firozpur Jhirka">Firozpur Jhirka</option>
-<option value="Gurugram">Gurugram</option>
-<option value="Hansi">Hansi</option>
-<option value="Hisar">Hisar</option>
-<option value="Jind">Jind</option>
-<option value="Kaithal">Kaithal</option>
-<option value="Karnal">Karnal</option>
-<option value="Kurukshetra">Kurukshetra</option>
-<option value="Panipat">Panipat</option>
-<option value="Pehowa">Pehowa</option>
-<option value="Rewari">Rewari</option>
-<option value="Rohtak">Rohtak</option>
-<option value="Sirsa">Sirsa</option>
-<option value="Sonipat">Sonipat</option>
-<option value="Chamba">Chamba</option>
-<option value="Dalhousie">Dalhousie</option>
-<option value="Dharmshala">Dharmshala</option>
-<option value="Hamirpur">Hamirpur</option>
-<option value="Kangra">Kangra</option>
-<option value="Kullu">Kullu</option>
-<option value="Mandi">Mandi</option>
-<option value="Nahan">Nahan</option>
-<option value="Shimla">Shimla</option>
-<option value="Una">Una</option>
-<option value="Anantnag">Anantnag</option>
-<option value="Baramula">Baramula</option>
-<option value="Doda">Doda</option>
-<option value="Gulmarg">Gulmarg</option>
-<option value="Jammu">Jammu</option>
-<option value="Kathua">Kathua</option>
-<option value="Punch">Punch</option>
-<option value="Rajouri">Rajouri</option>
-<option value="Srinagar">Srinagar</option>
-<option value="Udhampur">Udhampur</option>
-<option value="Bokaro">Bokaro</option>
-<option value="Chaibasa">Chaibasa</option>
-<option value="Deoghar">Deoghar</option>
-<option value="Dhanbad">Dhanbad</option>
-<option value="Dumka">Dumka</option>
-<option value="Giridih">Giridih</option>
-<option value="Hazaribag">Hazaribag</option>
-<option value="Jamshedpur">Jamshedpur</option>
-<option value="Jharia">Jharia</option>
-<option value="Rajmahal">Rajmahal</option>
-<option value="Ranchi">Ranchi</option>
-<option value="Saraikela">Saraikela</option>
-<option value="Badami">Badami</option>
-<option value="Ballari">Ballari</option>
-<option value="Bengaluru">Bengaluru</option>
-<option value="Belagavi">Belagavi</option>
-<option value="Bhadravati">Bhadravati</option>
-<option value="Bidar">Bidar</option>
-<option value="Chikkamagaluru">Chikkamagaluru</option>
-<option value="Chitradurga">Chitradurga</option>
-<option value="Davangere">Davangere</option>
-<option value="Halebid">Halebid</option>
-<option value="Hassan">Hassan</option>
-<option value="Hubballi-Dharwad">Hubballi-Dharwad</option>
-<option value="Kalaburagi">Kalaburagi</option>
-<option value="Kolar">Kolar</option>
-<option value="Madikeri">Madikeri</option>
-<option value="Mandya">Mandya</option>
-<option value="Mangaluru">Mangaluru</option>
-<option value="Mysuru">Mysuru</option>
-<option value="Raichur">Raichur</option>
-<option value="Shivamogga">Shivamogga</option>
-<option value="Shravanabelagola">Shravanabelagola</option>
-<option value="Shrirangapattana">Shrirangapattana</option>
-<option value="Tumakuru">Tumakuru</option>
-<option value="Vijayapura">Vijayapura</option>
-
-<option value="Alappuzha">Alappuzha</option>
-<option value="Vatakara">Vatakara</option>
-<option value="Idukki">Idukki</option>
-<option value="Kannur">Kannur</option>
-<option value="Kochi">Kochi</option>
-<option value="Kollam">Kollam</option>
-<option value="Kottayam">Kottayam</option>
-<option value="Kozhikode">Kozhikode</option>
-<option value="Mattancheri">Mattancheri</option>
-<option value="Palakkad">Palakkad</option>
-<option value="Thalassery">Thalassery</option>
-<option value="Thiruvananthapuram">Thiruvananthapuram</option>
-<option value="Thrissur">Thrissur</option>
-
-<option value="Kargil">Kargil</option>
-<option value="Leh">Leh</option>
-
-<option value="Balaghat">Balaghat</option>
-<option value="Barwani">Barwani</option>
-<option value="Betul">Betul</option>
-<option value="Bharhut">Bharhut</option>
-<option value="Bhind">Bhind</option>
-<option value="Bhojpur">Bhojpur</option>
-<option value="Bhopal">Bhopal</option>
-<option value="Burhanpur">Burhanpur</option>
-<option value="Chhatarpur">Chhatarpur</option>
-<option value="Chhindwara">Chhindwara</option>
-<option value="Damoh">Damoh</option>
-<option value="Datia">Datia</option>
-<option value="Dewas">Dewas</option>
-<option value="Dhar">Dhar</option>
-<option value="Dr Ambedkar Nagar (Mhow)">Dr Ambedkar Nagar (Mhow)</option>
-<option value="Guna">Guna</option>
-<option value="Gwalior">Gwalior</option>
-<option value="Hoshangabad">Hoshangabad</option>
-<option value="Indore">Indore</option>
-<option value="Itarsi">Itarsi</option>
-<option value="Jabalpur">Jabalpur</option>
-<option value="Jhabua">Jhabua</option>
-<option value="Khajuraho">Khajuraho</option>
-<option value="Khandwa">Khandwa</option>
-<option value="Khargone">Khargone</option>
-<option value="Maheshwar">Maheshwar</option>
-<option value="Mandla">Mandla</option>
-<option value="Mandsaur">Mandsaur</option>
-<option value="Morena">Morena</option>
-<option value="Murwara">Murwara</option>
-<option value="Narsimhapur">Narsimhapur</option>
-<option value="Narsinghgarh">Narsinghgarh</option>
-<option value="Narwar">Narwar</option>
-<option value="Neemuch">Neemuch</option>
-<option value="Nowgong">Nowgong</option>
-<option value="Orchha">Orchha</option>
-<option value="Panna">Panna</option>
-<option value="Raisen">Raisen</option>
-<option value="Rajgarh">Rajgarh</option>
-<option value="Ratlam">Ratlam</option>
-<option value="Rewa">Rewa</option>
-<option value="Sagar">Sagar</option>
-<option value="Sarangpur">Sarangpur</option>
-<option value="Satna">Satna</option>
-<option value="Sehore">Sehore</option>
-<option value="Seoni">Seoni</option>
-<option value="Shahdol">Shahdol</option>
-<option value="Shajapur">Shajapur</option>
-<option value="Sheopur">Sheopur</option>
-<option value="Shivpuri">Shivpuri</option>
-<option value="Ujjain">Ujjain</option>
-<option value="Vidisha">Vidisha</option>
-
-<option value="Ahmadnagar">Ahmadnagar</option>
-<option value="Akola">Akola</option>
-<option value="Amravati">Amravati</option>
-<option value="Aurangabad">Aurangabad</option>
-<option value="Bhandara">Bhandara</option>
-<option value="Bhusawal">Bhusawal</option>
-<option value="Bid">Bid</option>
-<option value="Buldhana">Buldhana</option>
-<option value="Chandrapur">Chandrapur</option>
-<option value="Daulatabad">Daulatabad</option>
-<option value="Dhule">Dhule</option>
-<option value="Jalgaon">Jalgaon</option>
-<option value="Kalyan">Kalyan</option>
-<option value="Karli">Karli</option>
-<option value="Kolhapur">Kolhapur</option>
-<option value="Mahabaleshwar">Mahabaleshwar</option>
-<option value="Malegaon">Malegaon</option>
-<option value="Matheran">Matheran</option>
-<option value="Mumbai">Mumbai</option>
-<option value="Nagpur">Nagpur</option>
-<option value="Nanded">Nanded</option>
-<option value="Nashik">Nashik</option>
-<option value="Osmanabad">Osmanabad</option>
-<option value="Pandharpur">Pandharpur</option>
-<option value="Parbhani">Parbhani</option>
-<option value="Pune">Pune</option>
-<option value="Ratnagiri">Ratnagiri</option>
-<option value="Sangli">Sangli</option>
-<option value="Satara">Satara</option>
-<option value="Sevagram">Sevagram</option>
-<option value="Solapur">Solapur</option>
-<option value="Thane">Thane</option>
-<option value="Ulhasnagar">Ulhasnagar</option>
-<option value="Vasai-Virar">Vasai-Virar</option>
-<option value="Wardha">Wardha</option>
-<option value="Yavatmal">Yavatmal</option>
-
-<option value="Imphal">Imphal</option>
-<option value="Cherrapunji">Cherrapunji</option>
-<option value="Shillong">Shillong</option>
-<option value="Aizawl">Aizawl</option>
-<option value="Lunglei">Lunglei</option>
-<option value="Kohima">Kohima</option>
-<option value="Mon">Mon</option>
-<option value="Phek">Phek</option>
-<option value="Wokha">Wokha</option>
-<option value="Zunheboto">Zunheboto</option>
-<option value="Balangir">Balangir</option>
-<option value="Baleshwar">Baleshwar</option>
-<option value="Baripada">Baripada</option>
-<option value="Bhubaneshwar">Bhubaneshwar</option>
-<option value="Brahmapur">Brahmapur</option>
-<option value="Cuttack">Cuttack</option>
-<option value="Dhenkanal">Dhenkanal</option>
-<option value="Kendujhar">Kendujhar</option>
-<option value="Konark">Konark</option>
-<option value="Koraput">Koraput</option>
-<option value="Paradip">Paradip</option>
-<option value="Phulabani">Phulabani</option>
-<option value="Puri">Puri</option>
-<option value="Sambalpur">Sambalpur</option>
-<option value="Udayagiri">Udayagiri</option>
-
-<option value="Amritsar">Amritsar</option>
-<option value="Batala">Batala</option>
-<option value="Chandigarh">Chandigarh</option>
-<option value="Faridkot">Faridkot</option>
-<option value="Firozpur">Firozpur</option>
-<option value="Gurdaspur">Gurdaspur</option>
-<option value="Hoshiarpur">Hoshiarpur</option>
-<option value="Jalandhar">Jalandhar</option>
-<option value="Kapurthala">Kapurthala</option>
-<option value="Ludhiana">Ludhiana</option>
-<option value="Nabha">Nabha</option>
-<option value="Patiala">Patiala</option>
-<option value="Rupnagar">Rupnagar</option>
-<option value="Sangrur">Sangrur</option>
-
-<option value="Ajmer">Ajmer</option>
-<option value="Alwar">Alwar</option>
-<option value="Amer">Amer</option>
-<option value="Barmer">Barmer</option>
-<option value="Beawar">Beawar</option>
-<option value="Bharatpur">Bharatpur</option>
-<option value="Bhilwara">Bhilwara</option>
-<option value="Bikaner">Bikaner</option>
-<option value="Bundi">Bundi</option>
-<option value="Chittorgarh">Chittorgarh</option>
-<option value="Churu">Churu</option>
-<option value="Dhaulpur">Dhaulpur</option>
-<option value="Dungarpur">Dungarpur</option>
-<option value="Ganganagar">Ganganagar</option>
-<option value="Hanumangarh">Hanumangarh</option>
-<option value="Jaipur">Jaipur</option>
-<option value="Jaisalmer">Jaisalmer</option>
-<option value="Jalor">Jalor</option>
-<option value="Jhalawar">Jhalawar</option>
-<option value="Jhunjhunu">Jhunjhunu</option>
-<option value="Jodhpur">Jodhpur</option>
-<option value="Kishangarh">Kishangarh</option>
-<option value="Kota">Kota</option>
-<option value="Merta">Merta</option>
-<option value="Nagaur">Nagaur</option>
-<option value="Nathdwara">Nathdwara</option>
-<option value="Pali">Pali</option>
-<option value="Phalodi">Phalodi</option>
-<option value="Pushkar">Pushkar</option>
-<option value="Sawai Madhopur">Sawai Madhopur</option>
-<option value="Shahpura">Shahpura</option>
-<option value="Sikar">Sikar</option>
-<option value="Sirohi">Sirohi</option>
-<option value="Tonk">Tonk</option>
-<option value="Udaipur">Udaipur</option>
-
-<option value="Gangtok">Gangtok</option>
-<option value="Gyalshing">Gyalshing</option>
-<option value="Lachung">Lachung</option>
-<option value="Mangan">Mangan</option>
-
-<option value="Arcot">Arcot</option>
-<option value="Chengalpattu">Chengalpattu</option>
-<option value="Chennai">Chennai</option>
-<option value="Chidambaram">Chidambaram</option>
-<option value="Coimbatore">Coimbatore</option>
-<option value="Cuddalore">Cuddalore</option>
-<option value="Dharmapuri">Dharmapuri</option>
-<option value="Dindigul">Dindigul</option>
-<option value="Erode">Erode</option>
-<option value="Kanchipuram">Kanchipuram</option>
-<option value="Kanniyakumari">Kanniyakumari</option>
-<option value="Kodaikanal">Kodaikanal</option>
-<option value="Kumbakonam">Kumbakonam</option>
-<option value="Madurai">Madurai</option>
-<option value="Mamallapuram">Mamallapuram</option>
-<option value="Nagappattinam">Nagappattinam</option>
-<option value="Nagercoil">Nagercoil</option>
-<option value="Palayamkottai">Palayamkottai</option>
-<option value="Pudukkottai">Pudukkottai</option>
-<option value="Rajapalayam">Rajapalayam</option>
-<option value="Ramanathapuram">Ramanathapuram</option>
-<option value="Salem">Salem</option>
-<option value="Thanjavur">Thanjavur</option>
-<option value="Tiruchchirappalli">Tiruchchirappalli</option>
-<option value="Tirunelveli">Tirunelveli</option>
-<option value="Tiruppur">Tiruppur</option>
-<option value="Thoothukudi">Thoothukudi</option>
-<option value="Udhagamandalam">Udhagamandalam</option>
-<option value="Vellore">Vellore</option>
-
-<option value="Agartala">Agartala</option>
-
-<option value="Agra">Agra</option>
-<option value="Aligarh">Aligarh</option>
-<option value="Amroha">Amroha</option>
-<option value="Ayodhya">Ayodhya</option>
-<option value="Azamgarh">Azamgarh</option>
-<option value="Bahraich">Bahraich</option>
-<option value="Ballia">Ballia</option>
-<option value="Banda">Banda</option>
-<option value="Bara Banki">Bara Banki</option>
-<option value="Bareilly">Bareilly</option>
-<option value="Basti">Basti</option>
-<option value="Bijnor">Bijnor</option>
-<option value="Bithur">Bithur</option>
-<option value="Budaun">Budaun</option>
-<option value="Bulandshahr">Bulandshahr</option>
-<option value="Deoria">Deoria</option>
-<option value="Etah">Etah</option>
-<option value="Etawah">Etawah</option>
-<option value="Faizabad">Faizabad</option>
-<option value="Farrukhabad-cum-Fatehgarh">Farrukhabad-cum-Fatehgarh</option>
-<option value="Fatehpur">Fatehpur</option>
-<option value="Fatehpur Sikri">Fatehpur Sikri</option>
-<option value="Ghaziabad">Ghaziabad</option>
-<option value="Ghazipur">Ghazipur</option>
-<option value="Gonda">Gonda</option>
-<option value="Gorakhpur">Gorakhpur</option>
-<option value="Hamirpur">Hamirpur</option>
-<option value="Hardoi">Hardoi</option>
-<option value="Hathras">Hathras</option>
-<option value="Jalaun">Jalaun</option>
-<option value="Jaunpur">Jaunpur</option>
-<option value="Jhansi">Jhansi</option>
-<option value="Kannauj">Kannauj</option>
-<option value="Kanpur">Kanpur</option>
-<option value="Lakhimpur">Lakhimpur</option>
-<option value="Lalitpur">Lalitpur</option>
-<option value="Lucknow">Lucknow</option>
-<option value="Mainpuri">Mainpuri</option>
-<option value="Mathura">Mathura</option>
-<option value="Meerut">Meerut</option>
-<option value="Mirzapur">Mirzapur</option>
-<option value="Moradabad">Moradabad</option>
-<option value="Muzaffarnagar">Muzaffarnagar</option>
-<option value="Partapgarh">Partapgarh</option>
-<option value="Pilibhit">Pilibhit</option>
-<option value="Prayagraj">Prayagraj</option>
-<option value="Rae Bareli">Rae Bareli</option>
-<option value="Rampur">Rampur</option>
-<option value="Saharanpur">Saharanpur</option>
-<option value="Sambhal">Sambhal</option>
-<option value="Shahjahanpur">Shahjahanpur</option>
-<option value="Sitapur">Sitapur</option>
-<option value="Sultanpur">Sultanpur</option>
-<option value="Tehri">Tehri</option>
-<option value="Varanasi">Varanasi</option>
-
-<option value="Alipurduar">Alipurduar</option>
-<option value="Asansol">Asansol</option>
-<option value="Baharampur">Baharampur</option>
-<option value="Bally">Bally</option>
-<option value="Balurghat">Balurghat</option>
-<option value="Bankura">Bankura</option>
-<option value="Baranagar">Baranagar</option>
-<option value="Barasat">Barasat</option>
-<option value="Barrackpore">Barrackpore</option>
-<option value="Basirhat">Basirhat</option>
-<option value="Bhatpara">Bhatpara</option>
-<option value="Bishnupur">Bishnupur</option>
-<option value="Bolpur">Bolpur</option>
-<option value="Burdwan">Burdwan</option>
-<option value="Chandannagar">Chandannagar</option>
-<option value="Darjeeling">Darjeeling</option>
-<option value="Diamond Harbour">Diamond Harbour</option>
-<option value="Durgapur">Durgapur</option>
-<option value="Haldia">Haldia</option>
-<option value="Howrah">Howrah</option>
-<option value="Jalpaiguri">Jalpaiguri</option>
-<option value="Kalimpong">Kalimpong</option>
-<option value="Kamarhati">Kamarhati</option>
-<option value="Kanchrapara">Kanchrapara</option>
-<option value="Kharagpur">Kharagpur</option>
-<option value="Krishnanagar">Krishnanagar</option>
-<option value="Malda">Malda</option>
-<option value="Midnapore">Midnapore</option>
-<option value="Murshidabad">Murshidabad</option>
-<option value="Nabadwip">Nabadwip</option>
-<option value="Palashi">Palashi</option>
-<option value="Panihati">Panihati</option>
-<option value="Purulia">Purulia</option>
-<option value="Raiganj">Raiganj</option>
-<option value="Santipur">Santipur</option>
-<option value="Serampore">Serampore</option>
-<option value="Siliguri">Siliguri</option>
-</select>
-</div>
-
-<!-- PASSPORT VALIDITY -->
-<div class="input-group"><label>PASSPORT VALIDITY (6 MONTHS MIN)</label><select id="passportValiditySelect"><option></option><option value="YES">YES</option><option value="NO">NO</option></select></div>
-
-<!-- VISA STATUS -->
-<div class="input-group"><label>VISA STATUS</label><select id="visaStatusSelect"><option></option><option value="Yes available">Yes available</option><option value="No, have to arrange by ALIKE">No, have to arrange by ALIKE</option></select></div>
-
-<!-- FLIGHT STATUS -->
-<div class="input-group">
-    <label>FLIGHT STATUS</label>
-    <select id="flightStatusSelect">
-        <option value="" selected disabled>Select Flight Status</option>
-        <option value="BOOKED">BOOKED</option>
-        <option value="NOT_BOOKED">NOT BOOKED</option>
-    </select>
-</div>
-
-<!-- Replace the flightBookedDetails div with this: -->
-<div id="flightBookedDetails" style="display:none;">
-    <div class="input-group"><label>DEPARTURE CITY</label><input type="text" id="flightDepartureCity" readonly style="background:#f0f0f0;"><small class="hint">Auto-fetched from Departure City</small></div>
-    
-    <!-- DEPARTURE DATE & TIME -->
-    <div class="input-group">
-        <label>DEPARTURE DATE</label>
-        <input type="text" id="flightDepartDate" placeholder="Select departure date">
+<div class="container">
+    <div class="main-header">
+        <h1>✈️ Alike Travels · Complete Destination Explorer</h1>
+        <p>12 destinations | Seasons, visa, currency + Expert Budget Guide (3-star category)</p>
     </div>
-    <div class="row-2col">
-        <div class="input-group">
-            <label>DEPARTURE TIME</label>
-            <div style="display: flex; gap: 8px;">
-                <select id="departHour" style="flex:1;"><option value="">HH</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select>
-                <span>:</span>
-               <select id="departMinute" style="flex:1;">
-                    <option value="">MM</option>
-  <option>01</option>
-  <option>02</option>
-  <option>03</option>
-  <option>04</option>
-  <option>05</option>
-  <option>06</option>
-  <option>07</option>
-  <option>08</option>
-  <option>09</option>
-  <option>10</option>
-  <option>11</option>
-  <option>12</option>
-  <option>13</option>
-  <option>14</option>
-  <option>15</option>
-  <option>16</option>
-  <option>17</option>
-  <option>18</option>
-  <option>19</option>
-  <option>20</option>
-  <option>21</option>
-  <option>22</option>
-  <option>23</option>
-  <option>24</option>
-  <option>25</option>
-  <option>26</option>
-  <option>27</option>
-  <option>28</option>
-  <option>29</option>
-  <option>30</option>
-  <option>31</option>
-  <option>32</option>
-  <option>33</option>
-  <option>34</option>
-  <option>35</option>
-  <option>36</option>
-  <option>37</option>
-  <option>38</option>
-  <option>39</option>
-  <option>40</option>
-  <option>41</option>
-  <option>42</option>
-  <option>43</option>
-  <option>44</option>
-  <option>45</option>
-  <option>46</option>
-  <option>47</option>
-  <option>48</option>
-  <option>49</option>
-  <option>50</option>
-  <option>51</option>
-  <option>52</option>
-  <option>53</option>
-  <option>54</option>
-  <option>55</option>
-  <option>56</option>
-  <option>57</option>
-  <option>58</option>
-  <option>59</option>
-</select><select id="departAMPM" style="flex:1;"><option value="">AM/PM</option><option value="AM">AM</option><option value="PM">PM</option></select>
-            </div>
+
+    <div class="country-grid" id="countryGrid"></div>
+
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-header">
+            <h2><span id="selectedFlag">🌏</span> <span id="selectedCountryName">Select a destination</span></h2>
+            <p id="selectedTagline">Complete travel intelligence for Indian travelers</p>
         </div>
+        <div class="info-content" id="infoContent"></div>
     </div>
-    
-    <!-- ARRIVAL DATE & TIME -->
-    <div class="input-group">
-        <label>ARRIVAL DATE</label>
-        <input type="text" id="flightArrivalDate" placeholder="Select arrival date">
-    </div>
-    <div class="row-2col">
-        <div class="input-group">
-            <label>ARRIVAL TIME</label>
-            <div style="display: flex; gap: 8px;">
-                <select id="arrivalHour" style="flex:1;"><option value="">HH</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select>
-                <span>:</span>
-                <select id="arrivalMinute" style="flex:1;"> <option value="">MM</option>
-  <option>01</option>
-  <option>02</option>
-  <option>03</option>
-  <option>04</option>
-  <option>05</option>
-  <option>06</option>
-  <option>07</option>
-  <option>08</option>
-  <option>09</option>
-  <option>10</option>
-  <option>11</option>
-  <option>12</option>
-  <option>13</option>
-  <option>14</option>
-  <option>15</option>
-  <option>16</option>
-  <option>17</option>
-  <option>18</option>
-  <option>19</option>
-  <option>20</option>
-  <option>21</option>
-  <option>22</option>
-  <option>23</option>
-  <option>24</option>
-  <option>25</option>
-  <option>26</option>
-  <option>27</option>
-  <option>28</option>
-  <option>29</option>
-  <option>30</option>
-  <option>31</option>
-  <option>32</option>
-  <option>33</option>
-  <option>34</option>
-  <option>35</option>
-  <option>36</option>
-  <option>37</option>
-  <option>38</option>
-  <option>39</option>
-  <option>40</option>
-  <option>41</option>
-  <option>42</option>
-  <option>43</option>
-  <option>44</option>
-  <option>45</option>
-  <option>46</option>
-  <option>47</option>
-  <option>48</option>
-  <option>49</option>
-  <option>50</option>
-  <option>51</option>
-  <option>52</option>
-  <option>53</option>
-  <option>54</option>
-  <option>55</option>
-  <option>56</option>
-  <option>57</option>
-  <option>58</option>
-  <option>59</option></select>
-                <select id="arrivalAMPM" style="flex:1;"><option value="">AM/PM</option><option value="AM">AM</option><option value="PM">PM</option></select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="input-group" id="arrivalCityGroup" style="display:none;">
-        <label>ARRIVAL CITY (DESTINATION)</label>
-        <select id="flightArrivalCitySelect" class="searchable-dropdown"><option value="">Select Arrival Destination</option></select>
-    </div>
-    <div class="input-group" id="arrivalCityAuto" style="display:block;">
-        <label>ARRIVAL CITY (DESTINATION)</label>
-        <input type="text" id="flightArrivalCity" readonly style="background:#f0f0f0;">
+    <div class="footer-note">
+        📌 Estimated cost based on 3-star category | 4-star upgrade: +10K overall (except Bali - flights extra)
     </div>
 </div>
-                    
-                    <div id="flightNotBookedDetails" style="display:none;">
-                        <div class="input-group"><label>FLIGHT BOOKING TENTATIVE DATE</label><input type="text" id="flightBookingDate" placeholder="Select date"></div>
-                    </div>
-                    
-                    <!-- CUSTOMER REQUIREMENT -->
-                    <div class="input-group"><label>CUSTOMER REQUIREMENT</label><textarea id="customerReq" placeholder="kids activities, shopping"></textarea></div>
-                    <!-- BOOK BY DATE -->
-                    <div class="input-group">
-                        <label>BOOK BY DATE (WITHIN 1 WEEK)</label>
-                        <input type="text" id="bookByDatePicker" placeholder="Select date">
-                    </div>
-                    
-                    <!-- CALLBACK TIME -->
-                    <div class="input-group"><label>CALLBACK TIME PREFERENCE BY TA</label>
-                        <select id="callbackPreset">
-                            <option></option>
-                            <option value="Available right now">Available right now (immediate callback)</option>
-                            <option value="CUSTOM_TIME">Custom time (select hour & minute)</option>
-                        </select>
-                        <div id="customTimePicker" style="display:none; margin-top:8px;" class="row-2col">
-                            <select id="callbackHour"><option value="">Hour</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select>
-                            <select id="callbackMinute"><option value="">Min</option><option>00</option><option>15</option><option>30</option><option>45</option></select>
-                            <select id="callbackAMPM"><option value="AM">AM</option><option value="PM">PM</option></select>
-                        </div>
-                    </div>
 
-                    <div class="input-group"><label>INFORMED ABOUT WHATSAPP</label><select id="whatsappInformed"><option></option><option value="No">No</option><option value="Yes">Yes</option></select></div>
-
-                    <div class="button-group">
-                        <button class="btn-generate" id="generateBtn">GENERATE NOTATION (ALL CAPS)</button>
-                        <button class="btn-reset" id="resetBtn">RESET</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="output-panel">
-                <div class="output-header"><h3>Customer Notation (UPPERCASE)</h3><p>Copy ready format</p></div>
-                <div class="notation-box" id="notationOutput"></div>
-                <div class="deal-name-area" id="dealNameDisplay">DEAL NAME: —</div>
-                <button class="copy-btn" id="copyNotationBtn">COPY FULL NOTATION</button>
-            </div>
-        </div>
-        <div class="footer-credit">✈️ DEVELOPED BY ABHISHEK SHARMA | PREMIUM TRAVEL TOOL</div>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            // Budget Reference Data
-            const budgetData = {
-                "Thailand (Phuket & Krabi)": { "4N5D": 42500, "9N10D": 87500 },
-                "Thailand (Bangkok & Pattaya)": { "4N5D": 37500, "9N10D": 77500 },
-                "Malaysia": { "4N5D": 42500, "6N7D": 62500 },
-                "Singapore": { "4N5D": 70000, "5N6D": 77500 },
-                "Vietnam": { "4N5D": 42500, "5N6D": 50000, "9N10D": 92500 },
-                "Sri Lanka": { "5N6D": 57500 },
-                "Dubai": { "4N5D": 52500 },
-                "Abu Dhabi": { "4N5D": 62500 },
-                "Bali": { "4N5D": 32500 }
-            };
-
-            function getPerDayRate(destination, nightsDays) {
-                let destKey = Object.keys(budgetData).find(key => destination.includes(key));
-                if (!destKey) return 0;
-                let rates = budgetData[destKey];
-                if (rates[nightsDays]) return rates[nightsDays];
-                let currentDays = parseInt(nightsDays.match(/(\d+)D/)[1]);
-                let availablePackages = Object.keys(rates);
-                let bestPerDay = 0;
-                for (let pkg of availablePackages) {
-                    let pkgDays = parseInt(pkg.match(/(\d+)D/)[1]);
-                    let perDay = rates[pkg] / pkgDays;
-                    if (perDay > bestPerDay) bestPerDay = perDay;
-                }
-                if (bestPerDay > 0) {
-                    let calculated = Math.round(bestPerDay * currentDays);
-                    return Math.round(calculated / 500) * 500;
-                }
-                return 0;
-            }
-
-            function getNightsDays() {
-                let days = parseInt($('#daysSelect').val());
-                return (days - 1) + "N" + days + "D";
-            }
-
-           function calculateOurBudget() {
-    let destinations = $('#destSelect').val();
-    if (!destinations || destinations.length === 0) {
-        $('#baseBudget').html('—');
-        $('#hotelUpgradeBudget').text('—');
-        $('#childBudget').text('—');
-        $('#totalOurBudget').text('—');
-        return 0;
-    }
-    
-    // Per day rates for each destination
-    const perDayRates = {
-        "Dubai": 10500,
-        "Abu Dhabi": 12500,
-        "Singapore": 14000,
-        "Malaysia": 8500,
-        "Thailand (Phuket & Krabi)": 8500,
-        "Thailand (Bangkok & Pattaya)": 7500,
-        "Vietnam": 8500,
-        "Bali": 6500,
-        "Sri Lanka": 11500,
-        "Qatar": 9000,
-        "Yas Island": 11000
+<script>
+    // Budget dataset based on qualification sheet (3-star category, per person)
+    const budgetData = {
+        "Thailand": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Phuket & Krabi", cost: "40-45K" },
+                { nights: "9N10D", destinationDetail: "Phuket & Krabi", cost: "85-90K" },
+                { nights: "4N5D", destinationDetail: "Bangkok Pattaya", cost: "35-40K" },
+                { nights: "9N10D", destinationDetail: "Bangkok Pattaya", cost: "75-80K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Malaysia": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Kuala Lumpur / Langkawi", cost: "40-45K" },
+                { nights: "6N7D", destinationDetail: "Multi-city", cost: "60-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Singapore": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Singapore", cost: "70K" },
+                { nights: "5N6D", destinationDetail: "Singapore", cost: "75-80K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Vietnam": {
+            variants: [
+                { nights: "5N6D", destinationDetail: "Vietnam", cost: "50K" },
+                { nights: "9N10D", destinationDetail: "Vietnam", cost: "90-95K" },
+                { nights: "4N5D", destinationDetail: "Vietnam", cost: "40-45K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Sri Lanka": {
+            variants: [
+                { nights: "5N6D", destinationDetail: "Sri Lanka", cost: "55-60K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Dubai": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Dubai", cost: "50-55K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Abu Dhabi": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Abu Dhabi", cost: "60-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Bali": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Bali", cost: "30-35K (land package only)" }
+            ],
+            upgradeNote: "Flights for Bali cost approx ₹40K per person extra. 4-star upgrade: +10K overall"
+        },
+        "Qatar": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Doha", cost: "55-65K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        },
+        "Yas Island": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Yas Island (Abu Dhabi)", cost: "65-70K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget. Theme park tickets extra."
+        },
+        "Pattaya": {
+            variants: [
+                { nights: "4N5D", destinationDetail: "Pattaya", cost: "30-35K" },
+                { nights: "5N6D", destinationDetail: "Pattaya + Bangkok", cost: "45-50K" }
+            ],
+            upgradeNote: "4-star upgrade: +10K overall additional budget"
+        }
     };
-    const DEFAULT_RATE = 8000;
-    
-    let hotelStar = $('#hotelStarSelect').val();
-    let hotelUpgrade = hotelStar === '4 Star' ? 10000 : (hotelStar === '5 Star' ? 20000 : 0);
-    
-    let adults = parseInt($('#adultCount').val()) || 0;
-    let childrenCount = parseInt($('#childCount').val()) || 0;
-    let totalDays = parseInt($('#daysSelect').val()) || 5;
-    
-    let isMultiple = destinations.length > 1 && !destinations.includes('OTHERS');
-    let perDayRate = DEFAULT_RATE;
-    let rateSource = "";
-    
-    if (!isMultiple) {
-        let mainDest = destinations[0];
-        if (mainDest === 'OTHERS') mainDest = $('#customDestination').val() || 'CUSTOM';
+
+    // Full destination data (same as before, enriched)
+    const countriesData = {
+        "Dubai": {
+            flag: "🇦🇪",
+            intro: "Dubai is a luxury city known for skyscrapers, shopping, and desert tourism",
+            famousFor: "Burj Khalifa, desert safari, luxury malls, Palm Jumeirah",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Weather becomes cool (20–30°C), perfect for desert safari, shopping & outdoor activities. Summer heat is gone.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Temperature starts rising but still manageable → fewer crowds & cheaper rates.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme heat (40–50°C) → outdoor travel becomes difficult.",
+            kidsActivities: "Waterparks (Aquaventure), Dubai Aquarium, desert safari, Legoland",
+            visaForIndians: "Tourist visa required",
+            howToGetVisa: "Apply online or via agent before travel → approval needed before arrival",
+            currencyInr: "AED (1 AED ≈ ₹22–23)",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Luxury, shopping, desert adventures, honeymoon"
+        },
+        "Vietnam": {
+            flag: "🇻🇳",
+            intro: "Vietnam offers budget travel with nature, history & culture",
+            famousFor: "Ha Long Bay, Pho, Hanoi Old Quarter, Da Nang",
+            peakSeason: "Oct – Apr",
+            whyPeak: "Weather is dry, cooler, less humidity, ideal for sightseeing & cruises.",
+            moderateSeason: "May – Jun",
+            whyModerate: "Weather becomes warmer with some rain → still travel-friendly.",
+            offSeason: "Jul – Sep",
+            whyOff: "Heavy monsoon rains & storms → travel disruptions.",
+            kidsActivities: "Halong Bay cruises, water puppet shows, beach time, VinWonders",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online → approval in 3–5 days, print e-visa",
+            currencyInr: "1,00,000 VND ≈ ₹330",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget travel, culture, nature, street food"
+        },
+        "Bali": {
+            flag: "🇮🇩",
+            intro: "Bali is a tropical island known for beaches & spirituality",
+            famousFor: "Kuta Beach, Ubud temples, rice terraces, Tanah Lot",
+            peakSeason: "Apr – Oct",
+            whyPeak: "Dry season, sunny days, low rainfall → best for beaches & outdoor fun.",
+            moderateSeason: "Mar & Nov",
+            whyModerate: "Transition months → mixed weather (some rain, some sun).",
+            offSeason: "Dec – Feb",
+            whyOff: "Heavy rainfall & humidity → beaches not enjoyable.",
+            kidsActivities: "Waterbom Bali, Bali Safari, turtle release, water sports",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily, pay fee on arrival",
+            currencyInr: "1,00,000 IDR ≈ ₹530",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Honeymoon, relaxation, yoga, surfing"
+        },
+        "Singapore": {
+            flag: "🇸🇬",
+            intro: "Singapore is a modern, clean, family-friendly destination",
+            famousFor: "Marina Bay Sands, Sentosa Island, Gardens by the Bay",
+            peakSeason: "Feb – Apr",
+            whyPeak: "Less rainfall + festivals → comfortable sightseeing & family travel.",
+            moderateSeason: "May – Jul",
+            whyModerate: "Slight humidity & occasional rain → manageable travel.",
+            offSeason: "Nov – Jan",
+            whyOff: "Frequent heavy rain → outdoor plans affected.",
+            kidsActivities: "Universal Studios Singapore, S.E.A. Aquarium, Zoo, Night Safari",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online before travel, usually 3-5 days processing",
+            currencyInr: "SGD ≈ ₹60–62",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Family trips, clean city, luxury transit"
+        },
+        "Abu Dhabi": {
+            flag: "🇦🇪",
+            intro: "Abu Dhabi is cultural, calm & luxurious",
+            famousFor: "Sheikh Zayed Grand Mosque, Louvre Abu Dhabi, Ferrari World",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Same as Dubai: pleasant winter weather, ideal for outdoor tourism.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Slightly hot but not extreme → decent time with lower prices.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme desert heat → not suitable for tourism.",
+            kidsActivities: "Ferrari World, Warner Bros World, Yas Waterworld",
+            visaForIndians: "Tourist visa required",
+            howToGetVisa: "Apply through UAE visa system or travel agent",
+            currencyInr: "AED (same as Dubai) 1 AED ≈ ₹22–23",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Culture + luxury, architecture lovers"
+        },
+        "Thailand": {
+            flag: "🇹🇭",
+            intro: "Thailand is popular for nightlife, beaches & affordability",
+            famousFor: "Phi Phi Islands, Pattaya, Bangkok nightlife, Phuket",
+            peakSeason: "Nov – Feb",
+            whyPeak: "Cool and dry weather → best for islands, beaches & nightlife.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Hot weather (up to 35°C) → okay but slightly uncomfortable.",
+            offSeason: "Jun – Oct",
+            whyOff: "Monsoon season → heavy rain, island tours affected.",
+            kidsActivities: "Safari World, beaches, elephant sanctuaries, water parks",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily, free for Indians until further notice",
+            currencyInr: "THB ≈ ₹2.3",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget + nightlife, islands, street food"
+        },
+        "Qatar": {
+            flag: "🇶🇦",
+            intro: "Qatar is a rich Gulf country known for luxury, modern infrastructure, and cultural heritage.",
+            famousFor: "Museum of Islamic Art, desert safari, Souq Waqif",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Pleasant weather (20–28°C) suitable for city tours and desert activities.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Temperature rises but still manageable → fewer crowds.",
+            offSeason: "May – Sep",
+            whyOff: "Extreme heat (40–45°C) makes outdoor travel difficult.",
+            kidsActivities: "Desert safari, museums, Katara Cultural Village",
+            visaForIndians: "Visa on Arrival / E-visa",
+            howToGetVisa: "Apply online or get visa on arrival depending on eligibility",
+            currencyInr: "QAR (1 QAR ≈ ₹22–23)",
+            timeDiff: "-2 hr 30 min",
+            bestFor: "Luxury + culture, stopover destination"
+        },
+        "Yas Island": {
+            flag: "🇦🇪",
+            intro: "Yas Island is an entertainment hub famous for theme parks and family attractions.",
+            famousFor: "Ferrari World, Warner Bros World, Yas Waterworld",
+            peakSeason: "Nov – Mar",
+            whyPeak: "Cool weather, perfect for theme parks and outdoor attractions.",
+            moderateSeason: "Apr & Oct",
+            whyModerate: "Slightly hot but still visitable with fewer tourists.",
+            offSeason: "May – Sep",
+            whyOff: "Very hot weather reduces tourist activity.",
+            kidsActivities: "Ferrari World, Warner Bros World, Yas Waterworld, CLYMB",
+            visaForIndians: "UAE visa required",
+            howToGetVisa: "Same as UAE visa process → apply via agent",
+            currencyInr: "AED (1 AED ≈ ₹22–23)",
+            timeDiff: "-1 hr 30 min",
+            bestFor: "Family entertainment, thrill seekers"
+        },
+        "Pattaya": {
+            flag: "🇹🇭",
+            intro: "Pattaya is a beach destination known for nightlife, water sports, and entertainment.",
+            famousFor: "Beaches, nightlife, Coral Island, Walking Street",
+            peakSeason: "Nov – Feb",
+            whyPeak: "Cool and dry weather ideal for beaches and nightlife.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Hot and humid but still okay for travel.",
+            offSeason: "Jun – Oct",
+            whyOff: "Heavy rainfall affects beach and water activities.",
+            kidsActivities: "Beach fun, water sports, Cartoon Network Amazone",
+            visaForIndians: "Visa on Arrival",
+            howToGetVisa: "Get visa at airport easily",
+            currencyInr: "THB ≈ ₹2.3",
+            timeDiff: "+1 hr 30 min",
+            bestFor: "Budget + nightlife, beach parties"
+        },
+        "Malaysia": {
+            flag: "🇲🇾",
+            intro: "Malaysia offers a mix of modern cities, islands, rainforests, and cultural diversity.",
+            famousFor: "Petronas Twin Towers, Langkawi, Genting Highlands, Penang",
+            peakSeason: "Dec – Feb",
+            whyPeak: "Less rainfall, comfortable weather for sightseeing and islands.",
+            moderateSeason: "Mar – May",
+            whyModerate: "Warm weather with occasional rain → budget-friendly.",
+            offSeason: "Sep – Nov",
+            whyOff: "Heavy monsoon rains disrupt travel plans.",
+            kidsActivities: "Theme parks, aquariums, Legoland Malaysia, Sunway Lagoon",
+            visaForIndians: "E-visa / Visa-free (short stay)",
+            howToGetVisa: "Apply online or visa-free entry for up to 30 days (conditions apply)",
+            currencyInr: "MYR (1 MYR ≈ ₹18–20)",
+            timeDiff: "+2 hr 30 min",
+            bestFor: "Mixed travel (city + nature), shopping"
+        },
+        "Sri Lanka": {
+            flag: "🇱🇰",
+            intro: "Sri Lanka is known for beaches, tea plantations, wildlife, and cultural heritage.",
+            famousFor: "Sigiriya Rock Fortress, tea gardens, Ella, Galle Fort",
+            peakSeason: "Dec – Mar",
+            whyPeak: "Dry weather, best for beaches and wildlife exploration.",
+            moderateSeason: "Apr – Sep",
+            whyModerate: "Mixed weather, some rain but still travel possible.",
+            offSeason: "Oct – Nov",
+            whyOff: "Heavy rainfall and storms affect sightseeing.",
+            kidsActivities: "Wildlife safaris, beaches, elephant orphanage",
+            visaForIndians: "E-visa required",
+            howToGetVisa: "Apply online → approval before travel",
+            currencyInr: "LKR (100 LKR ≈ ₹25–30)",
+            timeDiff: "Same as India (0 hrs)",
+            bestFor: "Nature, relaxation, culture, tea trails"
+        }
+    };
+
+    const countryList = [
+        "Dubai", "Vietnam", "Bali", "Singapore", "Abu Dhabi", "Thailand",
+        "Qatar", "Yas Island", "Pattaya", "Malaysia", "Sri Lanka"
+    ];
+
+    function createInfoCard(title, contentHtml, icon = "📌", extraClass = "") {
+        const card = document.createElement('div');
+        card.className = `info-card ${extraClass}`;
+        card.innerHTML = `<h3>${icon} ${title}</h3><div>${contentHtml}</div>`;
+        return card;
+    }
+
+    // Generate budget HTML for a destination
+    function getBudgetHtml(countryName) {
+        const budget = budgetData[countryName];
+        if (!budget) return "<p>Budget data coming soon. Contact team for custom quote.</p>";
         
-        for (let key in perDayRates) {
-            if (mainDest.includes(key) || key.includes(mainDest)) {
-                perDayRate = perDayRates[key];
-                rateSource = key;
-                break;
-            }
-        }
-        $('#baseBudget').html(`${mainDest.toUpperCase()}: ₹${perDayRate.toLocaleString()}/day/person × ${totalDays} days = ₹${(perDayRate * totalDays).toLocaleString()}/adult`);
-    } else {
-        let totalRate = 0;
-        for (let i = 0; i < destinations.length; i++) {
-            let days = parseInt($(`.destDays_${i}`).val()) || 0;
-            if (days > 0) {
-                let rate = DEFAULT_RATE;
-                for (let key in perDayRates) {
-                    if (destinations[i].includes(key)) { rate = perDayRates[key]; break; }
-                }
-                totalRate += rate * days;
-            }
-        }
-        perDayRate = totalRate / totalDays;
-        $('#baseBudget').html(`Multiple destinations: Avg ₹${Math.round(perDayRate).toLocaleString()}/day/person`);
-    }
-    
-    // Child cost calculation based on age
-    let totalChildCost = 0;
-    for (let i = 1; i <= childrenCount; i++) {
-        let years = $(`.childYears${i}`).val();
-        let months = $(`.childMonths${i}`).val();
-        let ageMonths = (parseInt(years) || 0) * 12 + (parseInt(months) || 0);
-        let percentage = ageMonths < 24 ? 0.25 : (ageMonths < 48 ? 0.50 : 1.0);
-        let childCost = perDayRate * totalDays * percentage;
-        childCost = Math.round(childCost / 500) * 500;
-        totalChildCost += childCost;
-    }
-    
-    let adultTotal = adults * perDayRate * totalDays;
-    let totalBudget = adultTotal + totalChildCost + hotelUpgrade;
-    totalBudget = Math.round(totalBudget);
-    
-    $('#hotelUpgradeBudget').text(hotelUpgrade > 0 ? `₹ ${hotelUpgrade.toLocaleString()} (${hotelStar})` : '— (3 Star)');
-    $('#childBudget').text(childrenCount > 0 ? `₹ ${Math.round(totalChildCost).toLocaleString()}` : '—');
-    $('#totalOurBudget').text(`₹ ${totalBudget.toLocaleString()}`);
-    
-    return totalBudget;
-}
-            // Initialize Select2
-            $('.searchable-dropdown').select2({ width: '100%', placeholder: 'Search or select' });
-            
-            // Flatpickr calendars
-            flatpickr("#startDatePicker", { dateFormat: "d M Y", minDate: "today" });
-            flatpickr("#tentativeStartPicker", { dateFormat: "d M Y", minDate: "today" });
-            flatpickr("#bookByDatePicker", { dateFormat: "d M Y", minDate: "today", maxDate: new Date().fp_incr(14) });
-            flatpickr("#flightBookingDate", { dateFormat: "d M Y", minDate: "today" });
-            // Add these to existing flatpickr initializations
-flatpickr("#flightDepartDate", { dateFormat: "d M Y", minDate: "today" });
-flatpickr("#flightArrivalDate", { dateFormat: "d M Y", minDate: "today" });
-
-            // Auto-fetch departure city
-            $('#departureCitySelect').on('change', function () {
-                let depCity = $(this).val();
-                $('#flightDepartureCity').val(depCity ? depCity.toUpperCase() : '');
-            });
-
-            function updateArrivalCity() {
-                let destinations = $('#destSelect').val();
-                let isMultiple = destinations && destinations.length > 1 && !destinations.includes('OTHERS');
-                if (isMultiple) {
-                    $('#arrivalCityGroup').show();
-                    $('#arrivalCityAuto').hide();
-                    let arrivalSelect = $('#flightArrivalCitySelect');
-                    arrivalSelect.empty().append('<option value="">Select Arrival Destination</option>');
-                    destinations.forEach(dest => { if (dest !== 'OTHERS') arrivalSelect.append(`<option value="${dest.toUpperCase()}">${dest.toUpperCase()}</option>`); });
-                    let customDest = $('#customDestination').val();
-                    if (customDest) arrivalSelect.append(`<option value="${customDest.toUpperCase()}">${customDest.toUpperCase()} (CUSTOM)</option>`);
-                } else {
-                    $('#arrivalCityGroup').hide();
-                    $('#arrivalCityAuto').show();
-                    if (destinations && destinations.length === 1) $('#flightArrivalCity').val(destinations[0].toUpperCase());
-                    else if (destinations && destinations.includes('OTHERS')) $('#flightArrivalCity').val($('#customDestination').val()?.toUpperCase() || '');
-                    else $('#flightArrivalCity').val('');
-                }
-            }
-
-            $('#destSelect').on('change', function () {
-                let selected = $(this).val();
-                if (selected && selected.includes('OTHERS')) $('#customDestination').show();
-                else $('#customDestination').hide();
-                updateArrivalCity();
-                generateDestinationDays();
-                calculateOurBudget();
-            });
-
-            $('#flightStatusSelect').on('change', function () {
-                let status = $(this).val();
-                $('#flightBookedDetails').toggle(status === 'BOOKED');
-                $('#flightNotBookedDetails').toggle(status === 'NOT_BOOKED');
-            });
-
-            function renderChildAges() {
-                let childCount = parseInt($('#childCount').val());
-                let container = $('#childAgesContainer');
-                container.empty();
-                for (let i = 1; i <= childCount; i++) {
-                    let div = $('<div class="child-age-row" style="margin-bottom:12px;padding:10px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;"></div>');
-                    let label = $(`<label style="font-size:0.7rem;font-weight:bold;color:#2c5a4a;display:block;margin-bottom:6px;">CHILD ${i} AGE</label>`);
-                    let flexDiv = $('<div style="display:flex;gap:10px;"></div>');
-                    let yearSelect = $(`<select class="childYears${i}" style="padding:0.5rem;border-radius:1rem;flex:1;"></select>`);
-                    yearSelect.append('<option value="" disabled selected>Select Year</option>');
-                    for (let y = 1; y <= 17; y++) yearSelect.append(`<option value="${y}">${y} Year${y > 1 ? 's' : ''}</option>`);
-                    let monthSelect = $(`<select class="childMonths${i}" style="padding:0.5rem;border-radius:1rem;flex:1;"></select>`);
-                    monthSelect.append('<option value="" disabled selected>Select Month</option>');
-                    for (let m = 1; m <= 12; m++) monthSelect.append(`<option value="${m}">${m} Month${m > 1 ? 's' : ''}</option>`);
-                    flexDiv.append(yearSelect, monthSelect);
-                    div.append(label, flexDiv);
-                    container.append(div);
-                }
-            }
-
-            $('#childCount').on('change', function () { renderChildAges(); calculateOurBudget(); });
-            renderChildAges();
-
-            function toggleTravelSections() {
-                let isConfirmed = $('#travelConfirmSelect').val() === 'YES';
-                $('#confirmedDateGroup').toggle(isConfirmed);
-                $('#tentativeReasonGroup').toggle(!isConfirmed);
-            }
-            $('#travelConfirmSelect').on('change', toggleTravelSections);
-            toggleTravelSections();
-
-            $('#callbackPreset').on('change', function () {
-                $('#customTimePicker').toggle($(this).val() === 'CUSTOM_TIME');
-            });
-
-            function toUpper(str) { return (str || "").toString().trim().toUpperCase(); }
-
-            function getDestination() {
-                let selected = $('#destSelect').val();
-                if (!selected || selected.length === 0) return "";
-                let customDest = '';
-                if (selected.includes('OTHERS')) {
-                    customDest = $('#customDestination').val();
-                    if (customDest) selected = selected.filter(s => s !== 'OTHERS');
-                }
-                let destinations = selected.map(s => s.toUpperCase());
-                if (customDest) destinations.push(customDest.toUpperCase());
-                return destinations.length === 1 ? destinations[0] : destinations.join(", ");
-            }
-
-            function getMultiDestNightsDays() {
-                let destinations = $('#destSelect').val();
-                if (destinations && destinations.length > 1 && !destinations.includes('OTHERS')) {
-                    let result = [];
-                    for (let i = 0; i < destinations.length; i++) {
-                        let days = parseInt($(`.destDays_${i}`).val() || 0);
-                        if (days > 0) result.push(`${destinations[i].toUpperCase()}: ${days - 1}N${days}D`);
-                    }
-                    return result.length ? result.join(" | ") : getNightsDays();
-                }
-                return getNightsDays();
-            }
-
-            function getTravellerString() {
-                let adults = parseInt($('#adultCount').val());
-                let childrenCount = parseInt($('#childCount').val());
-                let tripType = $('#tripType').val();
-                let tripTypeText = tripType ? tripType.toUpperCase() : "";
-                let travStr = adults + "A";
-                if (childrenCount > 0) {
-                    let childAges = [];
-                    for (let i = 1; i <= childrenCount; i++) {
-                        let years = $(`.childYears${i}`).val();
-                        let months = $(`.childMonths${i}`).val();
-                        let ageStr = "";
-                        let isInfant = (years && parseInt(years) < 2) || (!years && months && parseInt(months) < 24);
-                        if (years && months) ageStr = `${years}Y${months}M`;
-                        else if (years) ageStr = `${years}Y`;
-                        else if (months) ageStr = `${months}M`;
-                        else ageStr = "AGE?";
-                        if (isInfant && ageStr !== "AGE?") ageStr += " INFANT";
-                        childAges.push(ageStr);
-                    }
-                    travStr += " " + childrenCount + "C";
-                    if (tripTypeText) travStr += " (" + tripTypeText + ")";
-                    if (childAges.length) travStr += " (" + childAges.join(", ") + ")";
-                } else if (tripTypeText) travStr += " (" + tripTypeText + ")";
-                return travStr;
-            }
-
-            function getTravelDateRange() {
-                let nights = parseInt($('#daysSelect').val()) - 1;
-                let isConfirmed = $('#travelConfirmSelect').val() === 'YES';
-                let startRaw = isConfirmed ? $('#startDatePicker').val() : $('#tentativeStartPicker').val();
-                if (!startRaw) return "DATE NOT SET";
-                let startDate = new Date(startRaw);
-                if (isNaN(startDate.getTime())) return startRaw;
-                let endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + nights);
-                let formatDate = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).replace(/ /g, '');
-                return `${formatDate(startDate)}-${formatDate(endDate)}`;
-            }
-
-            function getTravelReason() {
-                if ($('#travelConfirmSelect').val() === 'NO') {
-                    let reason = $('#tentativeReason').val();
-                    return reason ? ` (REASON: ${reason.toUpperCase()})` : "";
-                }
-                return "";
-            }
-
-            function getHotelPref() { return `${$('#hotelStarSelect').val()}, ${$('#roomCountSelect').val()} ROOM(S)`; }
-            function getPassportText() { return $('#passportValiditySelect').val() === 'YES' ? "YES AND VALID FROM THE DATE OF TRAVEL" : "NO, NEEDS RENEWAL"; }
-            
-            function getCallbackTime() {
-                let preset = $('#callbackPreset').val();
-                if (preset === 'CUSTOM_TIME') {
-                    let hour = $('#callbackHour').val();
-                    let minute = $('#callbackMinute').val();
-                    let ampm = $('#callbackAMPM').val();
-                    if (hour && minute && ampm) return `CUSTOM: ${hour}:${minute} ${ampm}`;
-                    return "PENDING CUSTOM TIME";
-                }
-                return "AVAILABLE RIGHT NOW (IMMEDIATE CALLBACK)";
-            }
-
-            function generateDestinationDays() {
-                let destinations = $('#destSelect').val();
-                let container = $('#destinationDaysContainer');
-                container.empty();
-                if (destinations && destinations.length > 1 && !destinations.includes('OTHERS')) {
-                    $('#multiDestinationDays').show();
-                    let totalDays = parseInt($('#daysSelect').val());
-                    for (let i = 0; i < destinations.length; i++) {
-                        let div = $('<div class="row-2col" style="margin-bottom:10px;"></div>');
-                        let label = $(`<label style="font-size:0.7rem;font-weight:bold;">${destinations[i].toUpperCase()} DAYS</label>`);
-                        let select = $(`<select class="destDays_${i}" style="padding:0.5rem;border-radius:1rem;"></select>`);
-                        let maxDays = totalDays - (destinations.length - i - 1);
-                        for (let d = 1; d <= maxDays; d++) select.append(`<option value="${d}" ${i === 0 && d === Math.floor(totalDays/destinations.length) ? 'selected' : ''}>${d} Day${d > 1 ? 's' : ''}</option>`);
-                        select.on('change', function() { updateRemainingDays(); calculateOurBudget(); });
-                        div.append(label, select);
-                        container.append(div);
-                    }
-                    updateRemainingDays();
-                } else { $('#multiDestinationDays').hide(); }
-            }
-
-            function updateRemainingDays() {
-                let destinations = $('#destSelect').val();
-                if (!destinations || destinations.length <= 1) return;
-                let totalDays = parseInt($('#daysSelect').val());
-                let usedDays = 0;
-                for (let i = 0; i < destinations.length - 1; i++) usedDays += parseInt($(`.destDays_${i}`).val() || 0);
-                let lastSelect = $(`.destDays_${destinations.length - 1}`);
-                let remaining = totalDays - usedDays;
-                if (lastSelect.length && remaining > 0) {
-                    lastSelect.empty();
-                    for (let d = 1; d <= remaining; d++) lastSelect.append(`<option value="${d}" ${d === remaining ? 'selected' : ''}>${d} Day${d > 1 ? 's' : ''}</option>`);
-                }
-            }
-
-            $('#daysSelect').on('change', function () { generateDestinationDays(); calculateOurBudget(); });
-            
-            $('#hotelStarSelect').on('change', function() {
-                let star = $(this).val();
-                $('#hotel4StarConfirm').toggle(star === '4 Star');
-                $('#hotel5StarConfirm').toggle(star === '5 Star');
-                calculateOurBudget();
-            });
-
-            $('#adultCount, #customerBudgetAmount, #customerBudgetType').on('change input', function() { calculateOurBudget(); });
-            $(document).on('change', '[class^="childYears"], [class^="childMonths"]', function() { calculateOurBudget(); });
-
-            function generateNotation() {
-                let missingFields = [];
-                if (!$('#destSelect').val() || $('#destSelect').val().length === 0) missingFields.push("DESTINATION");
-                if (!$('#tripType').val()) missingFields.push("TRIP TYPE");
-                if ($('#adultCount').val() === "0" && $('#childCount').val() === "0") missingFields.push("TRAVELLERS");
-                if (!$('#departureCitySelect').val()) missingFields.push("DEPARTURE CITY");
-                if (!$('#startDatePicker').val() && $('#travelConfirmSelect').val() === "YES") missingFields.push("TRAVELLING DATE");
-                if (!$('#bookByDatePicker').val()) missingFields.push("BOOK BY DATE");
-
-                if (missingFields.length > 0) {
-                    $('#notationOutput').html(`<span style="color: #ff6b6b; font-weight: bold; white-space: pre-wrap;">⚠️ KINDLY FILL ALL INFORMATION ⚠️\n\nMissing Fields:\n- ${missingFields.join("\n- ")}</span>`);
-                    $('#dealNameDisplay').text('DEAL NAME: —');
-                    return;
-                }
-
-                let tripType = $('#tripType').val().toUpperCase();
-                let dest = getDestination();
-                let travellers = getTravellerString();
-                let nightsDays = getMultiDestNightsDays();
-                let travelRange = getTravelDateRange();
-                let reasonAdd = getTravelReason();
-                let hotel = getHotelPref();
-
-                // Customer Budget
-                let customerAmount = $('#customerBudgetAmount').val();
-let customerCurrency = $('#customerBudgetCurrency').val();
-let customerType = $('#customerBudgetType').val();
-let flightIncluded = $('#customerFlightIncluded').val();
-let budgetOfferedBy = $('#budgetOfferedBy').val();
-
-let budgetText = "";
-if (budgetOfferedBy === "CUSTOMER") {
-    budgetText = customerAmount ? `CUSTOMER BUDGET: ${customerCurrency} ${customerAmount} (${customerType === 'per_person' ? 'PER PERSON' : 'TOTAL BUDGET'})${flightIncluded ? ` | FLIGHT: ${flightIncluded.toUpperCase()}` : ''}` : "CUSTOMER BUDGET: NOT SPECIFIED";
-} else {
-    let ourBudgetTotal = calculateOurBudget();
-    budgetText = ourBudgetTotal ? `💰 ALIKE ESTIMATED BUDGET: ₹ ${ourBudgetTotal.toLocaleString()} (FOR ${$('#adultCount').val()} ADULTS + ${$('#childCount').val() || 0} CHILDREN, ${$('#hotelStarSelect').val()})` : "💰 ALIKE BUDGET: CALCULATING...";
-}
-
-let budgetLine = budgetText;
-                // Flight Status
-                let flightStatusSelect = $('#flightStatusSelect').val();
-                let flightText = "";
-                if (flightStatusSelect === 'BOOKED') {
-    let depCity = $('#flightDepartureCity').val() || $('#departureCitySelect').val();
-    let depDate = $('#flightDepartDate').val() || "DATE NOT SET";
-    let depHour = $('#departHour').val();
-    let depMin = $('#departMinute').val();
-    let depAmPm = $('#departAMPM').val();
-    let arrDate = $('#flightArrivalDate').val() || "DATE NOT SET";
-    let arrHour = $('#arrivalHour').val();
-    let arrMin = $('#arrivalMinute').val();
-    let arrAmPm = $('#arrivalAMPM').val();
-    let destinations = $('#destSelect').val();
-    let isMultiple = destinations && destinations.length > 1 && !destinations.includes('OTHERS');
-    let arrCity = isMultiple ? $('#flightArrivalCitySelect').val() : $('#flightArrivalCity').val();
-    if (!arrCity) arrCity = getDestination();
-    let departTime = (depHour && depMin && depAmPm) ? `${depHour}:${depMin} ${depAmPm}` : "TIME NOT SET";
-    let arrivalTime = (arrHour && arrMin && arrAmPm) ? `${arrHour}:${arrMin} ${arrAmPm}` : "TIME NOT SET";
-    flightText = `BOOKED (DEPART: ${depCity || "?"} ON ${depDate} AT ${departTime}) (ARRIVAL: ${arrCity || "?"} ON ${arrDate} AT ${arrivalTime})`;
-} else if (flightStatusSelect === 'NOT_BOOKED') {
-                    flightText = `NOT BOOKED - WILL BOOK BY: ${$('#flightBookingDate').val() || "TBD"}`;
-                } else { flightText = "—"; }
-
-                let flightStat = flightText.toUpperCase();
-                let passport = getPassportText();
-                let visa = $('#visaStatusSelect').val().toUpperCase();
-                let departCity = toUpper($('#departureCitySelect').val());
-                let bookBy = toUpper($('#bookByDatePicker').val());
-                let customerReq = toUpper($('#customerReq').val());
-                let callback = getCallbackTime().toUpperCase();
-                let whatsapp = $('#whatsappInformed').val().toUpperCase();
-
-                return `DESTINATION: ${dest || "—"}\n` +
-       `TRIP TYPE: ${tripType || "—"}\n` +
-       `NUMBER OF TRAVELLERS: ${travellers}\n` +
-       `NUMBER OF NIGHTS & DAYS: ${nightsDays}\n` +
-       `TRAVEL DATE (CONFIRM THE DAYS AND REASON): ${travelRange}${reasonAdd}\n` +
-       `HOTEL STAR - PREFERRED NO. OF ROOMS: ${hotel}\n` +
-       `BUDGET (PER/PERSON+WITH FLIGHT OR WITHOUT FLIGHT): ${budgetLine}\n` +
-       `FLIGHT BOOKED OR NOT: ${flightStat}\n` +
-       `PASSPORT VALIDITY (6 MONTHS MIN): ${passport}\n` +
-       `VISA: ${visa}\n` +
-       `DEPARTURE CITY: ${departCity || "—"}\n` +
-       `BOOK BY DATE (WITHIN 1 WEEK): ${bookBy || "—"}\n` +
-       `CUSTOMER REQUIREMENT: ${customerReq || "—"}\n` +
-       `FOLLOW-UP TIME BY TRAVEL AGENT: ${callback}\n` +
-       `INFORMED ABOUT WHATSAPP: ${whatsapp}`;
-            }
-
-            function generateDealName() {
-                let mainDest = getDestination().split(",")[0].trim().replace(/[^\w\s]/g, '') || "TRIP";
-                let adults = $('#adultCount').val();
-                let children = $('#childCount').val();
-                let travellerCode = adults + "A" + (children !== "0" && children > 0 ? children + "C" : "");
-                let nightsDays = getNightsDays();
-                let travelRange = getTravelDateRange();
-                if (travelRange === "DATE NOT SET") travelRange = "";
-                let parts = [mainDest];
-                if (travellerCode && travellerCode !== "0A") parts.push(`(${travellerCode})`);
-                if (nightsDays) parts.push(nightsDays);
-                if (travelRange) parts.push(travelRange.replace(/-/g, '/'));
-                return parts.join("-").toUpperCase();
-            }
-
-            function updateDisplay() {
-                $('#notationOutput').text(generateNotation());
-                $('#dealNameDisplay').text(`DEAL NAME: ${generateDealName()}`);
-            }
-
-            $('#generateBtn').on('click', function (e) { e.preventDefault(); updateDisplay(); });
-
-            async function copyFull() {
-                let full = generateNotation() + "\n\nDEAL NAME: " + generateDealName();
-                try {
-                    await navigator.clipboard.writeText(full);
-                    $('#copyNotationBtn').text("COPIED!");
-                    setTimeout(() => $('#copyNotationBtn').text("COPY FULL NOTATION"), 2000);
-                } catch (err) { alert("Manual copy"); }
-            }
-            $('#copyNotationBtn').on('click', copyFull);
-
-            function resetAll() {
-                // Add to resetAll function:
-$('#flightDepartDate, #flightArrivalDate').val('');
-$('#budgetOfferedBy').val('');
-                $('#hotelStarSelect').val('');
-                $('#hotel4StarConfirm, #hotel5StarConfirm').hide();
-                $('#flightArrivalCitySelect').val('').trigger('change');
-                $('#flightArrivalCity').val('');
-                $('#arrivalCityGroup').hide();
-                $('#arrivalCityAuto').show();
-                $('#tripType').val('');
-                $('#destSelect').val(null).trigger('change');
-                $('#customerBudgetAmount, #customerBudgetType, #customerFlightIncluded, #customerBudgetCurrency').val('');
-                $('#customerBudgetType').val('per_person');
-                $('#customerBudgetCurrency').val('₹');
-                $('#customDestination').hide().val('');
-                $('#adultCount').val('0');
-                $('#childCount').val('0').trigger('change');
-                $('#daysSelect').val('');
-                $('#travelConfirmSelect').val(''); toggleTravelSections();
-                $('#startDatePicker, #tentativeStartPicker, #tentativeReason, #bookByDatePicker, #customerReq').val('');
-                $('#hotelStarSelect').val('');
-                $('#roomCountSelect').val('');
-                $('#departureCitySelect').val('').trigger('change');
-                $('#passportValiditySelect').val('');
-                $('#visaStatusSelect').val('');
-                $('#flightStatusSelect').val('');
-                $('#flightBookedDetails, #flightNotBookedDetails').hide();
-                $('#departHour, #departMinute, #departAMPM, #arrivalHour, #arrivalMinute, #arrivalAMPM').val('');
-                $('#flightDepartureCity, #flightArrivalCity, #flightBookingDate').val('');
-                $('#callbackPreset').val('');
-                $('#customTimePicker').hide();
-                $('#callbackHour, #callbackMinute, #callbackAMPM').val('AM');
-                $('#whatsappInformed').val('');
-                $('#notationOutput').empty();
-                $('#dealNameDisplay').text('DEAL NAME: —');
-                calculateOurBudget();
-            }
-            $('#resetBtn').on('click', resetAll);
-            calculateOurBudget();
+        let html = `<ul style="margin:0; padding-left:1rem;">`;
+        budget.variants.forEach(v => {
+            html += `<li><strong>${v.nights}</strong> (${v.destinationDetail}): ₹${v.cost} per person</li>`;
         });
-    </script>
-</body>
+        html += `</ul><div class="upgrade-note"><strong>⭐ Upgrade Note:</strong> ${budget.upgradeNote}</div>`;
+        return html;
+    }
 
+    function renderCountryDetails(countryKey) {
+        const data = countriesData[countryKey];
+        if (!data) return;
+
+        document.getElementById('selectedFlag').innerText = data.flag;
+        document.getElementById('selectedCountryName').innerText = countryKey;
+        document.getElementById('selectedTagline').innerHTML = `${data.intro} | Best for: ${data.bestFor}`;
+
+        const container = document.getElementById('infoContent');
+        container.innerHTML = '';
+
+        // Card 1: Highlights
+        const highlightsHtml = `
+            <strong>🏆 Famous For:</strong> ${data.famousFor}<br>
+            <strong>👪 Kids Activities:</strong> ${data.kidsActivities}<br>
+            <strong>✈️ Best For:</strong> ${data.bestFor}
+        `;
+        container.appendChild(createInfoCard("Destination Highlights", highlightsHtml, "🌟"));
+
+        // Card 2: Seasons deep dive
+        const seasonsHtml = `
+            <strong>🔆 Peak Season:</strong> ${data.peakSeason}<br>
+            <div class="badge">${data.whyPeak}</div><br><br>
+            <strong>🌤️ Moderate Season:</strong> ${data.moderateSeason}<br>
+            <div class="badge">${data.whyModerate}</div><br><br>
+            <strong>☔ Off Season:</strong> ${data.offSeason}<br>
+            <div class="badge">${data.whyOff}</div>
+        `;
+        container.appendChild(createInfoCard("Best Time to Visit", seasonsHtml, "📅"));
+
+        // Card 3: Visa + Currency + Time
+        const logisticsHtml = `
+            <strong>🛂 Visa for Indians:</strong> ${data.visaForIndians}<br>
+            <strong>📄 How to get visa:</strong> ${data.howToGetVisa}<br>
+            <strong>💰 Currency (INR):</strong> ${data.currencyInr}<br>
+            <strong>⏰ Time Difference:</strong> ${data.timeDiff}
+        `;
+        container.appendChild(createInfoCard("Travel Logistics", logisticsHtml, "🎫"));
+
+        // Card 4: Budget Estimate (NEW - from qualification sheet)
+        const budgetHtml = getBudgetHtml(countryKey);
+        container.appendChild(createInfoCard("Estimated Budget (3-Star)", budgetHtml, "💰", "budget-highlight"));
+
+        // Card 5: Expert Recommendation
+        let recommendation = `Best months: ${data.peakSeason} → ${data.whyPeak.substring(0, 100)}${data.whyPeak.length > 100 ? '...' : ''}`;
+        container.appendChild(createInfoCard("Expert Recommendation", recommendation, "🧭"));
+    }
+
+    function buildCountrySelector() {
+        const grid = document.getElementById('countryGrid');
+        grid.innerHTML = '';
+        countryList.forEach(country => {
+            const data = countriesData[country];
+            if (!data) return;
+            const btn = document.createElement('div');
+            btn.className = 'country-card';
+            btn.setAttribute('data-country', country);
+            btn.innerHTML = `<span class="flag">${data.flag}</span> <span>${country}</span>`;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.country-card').forEach(card => card.classList.remove('active'));
+                btn.classList.add('active');
+                renderCountryDetails(country);
+                document.getElementById('infoPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            grid.appendChild(btn);
+        });
+        const firstCard = document.querySelector('.country-card');
+        if (firstCard) {
+            firstCard.classList.add('active');
+            renderCountryDetails(countryList[0]);
+        }
+    }
+
+    buildCountrySelector();
+</script>
+</body>
 </html>
